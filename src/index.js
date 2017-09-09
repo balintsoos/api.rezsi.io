@@ -4,11 +4,9 @@ const mongoose = require('mongoose');
 const config = require('./config/main');
 const app = require('./config/app');
 
-const debug = require('debug')('rezsi.io:index');
+const debug = require('debug')('rezsi-io:index');
 
-Promise = require('bluebird'); // eslint-disable-line no-global-assign
-
-mongoose.Promise = Promise;
+mongoose.Promise = global.Promise;
 
 const mongoUri = config.mongo.host;
 
@@ -17,11 +15,7 @@ mongoose.connection.on('error', () => {
 });
 
 mongoose.connect(mongoUri, {
-  server: {
-    socketOptions: {
-      keepAlive: 1,
-    },
-  },
+  keepAlive: true,
 });
 
 if (config.MONGOOSE_DEBUG) {
