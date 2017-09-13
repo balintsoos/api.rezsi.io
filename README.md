@@ -1,4 +1,4 @@
-# rezsi.io
+# api.rezsi.io
 
 ## Getting started
 
