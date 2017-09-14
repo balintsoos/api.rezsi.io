@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const config = require('./config/main');
 const app = require('./config/app');
 
-const debug = require('debug')('rezsi-io:index');
+const debug = require('debug')('API:index');
 
 const mongoUri = config.mongo.host;
 
@@ -14,12 +14,15 @@ mongoose.connect(mongoUri, {
   useMongoClient: true,
   keepAlive: true,
 });
-mongoose.connection.on('error', () => {
-  throw new Error(`Unable to connect to database: ${mongoUri}`);
-});
-mongoose.connection.once('open', () => {
-  console.info(`Connected to database: ${mongoUri}`); // eslint-disable-line no-console
-});
+
+const db = mongoose.connection;
+
+db.on('connecting', () => debug(`Connecting to to database: ${mongoUri}`));
+db.on('connected', () => debug(`Connected to to database: ${mongoUri}`));
+db.once('open', () => debug(`Connection is open to database: ${mongoUri}`));
+db.on('error', () => debug(`Unable to connect to database: ${mongoUri}`));
+db.on('reconnected', () => debug(`Reconnected to database: ${mongoUri}`));
+db.on('disconnected', () => debug(`Disconnected from database: ${mongoUri}`));
 
 if (config.MONGOOSE_DEBUG) {
   mongoose.set('debug', (collectionName, method, query, doc) => {
@@ -30,9 +33,8 @@ if (config.MONGOOSE_DEBUG) {
 // module.parent check is required to support mocha watch
 // src: https://github.com/mochajs/mocha/issues/1912
 if (!module.parent) {
-  // listen on port config.port
   app.listen(config.port, () => {
-    console.info(`Server started on port ${config.port} (${config.env})`); // eslint-disable-line no-console
+    debug(`Server started on port ${config.port} (${config.env})`);
   });
 }
 
