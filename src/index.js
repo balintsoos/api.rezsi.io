@@ -9,11 +9,6 @@ const debug = require('debug')('API:index');
 const mongoUri = config.mongo.host;
 
 mongoose.Promise = global.Promise;
-mongoose.connect(mongoUri, {
-  promiseLibrary: global.Promise,
-  useMongoClient: true,
-  keepAlive: true,
-});
 
 const db = mongoose.connection;
 
@@ -29,6 +24,12 @@ if (config.MONGOOSE_DEBUG) {
     debug(`${collectionName}.${method}`, util.inspect(query, false, 20), doc);
   });
 }
+
+mongoose.connect(mongoUri, {
+  promiseLibrary: global.Promise,
+  useMongoClient: true,
+  keepAlive: true,
+});
 
 // module.parent check is required to support mocha watch
 // src: https://github.com/mochajs/mocha/issues/1912
