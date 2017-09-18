@@ -2,8 +2,8 @@
   "name": "api.rezsi.io",
   "version": "0.0.1",
   "main": "src/index.js",
-  "repository": "https://github.com/balintsoos/rezsi.io.git",
-  "bugs": "https://github.com/balintsoos/rezsi.io/issues",
+  "repository": "https://github.com/balintsoos/api.rezsi.io.git",
+  "bugs": "https://github.com/balintsoos/api.rezsi.io/issues",
   "author": "Balint Soos <soosbalint95@gmail.com> (https://github.com/balintsoos)",
   "license": "MIT",
   "private": true,
@@ -24,7 +24,8 @@
     "yarn": ">=1.0.1"
   },
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "start-dev": "nodemon src/index.js"
   },
   "dependencies": {
     "body-parser": "1.17.2",
@@ -49,6 +50,7 @@
   "devDependencies": {
     "eslint": "4.6.1",
     "eslint-config-airbnb-base": "12.0.0",
-    "eslint-plugin-import": "2.7.0"
+    "eslint-plugin-import": "2.7.0",
+    "nodemon": "1.12.1"
   }
 }

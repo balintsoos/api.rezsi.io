@@ -1,8 +1,12 @@
 const express = require('express');
+const httpStatus = require('http-status');
+const authRoutes = require('./auth.route');
 
 const router = express.Router(); // eslint-disable-line new-cap
 
-/* GET /health-check - Check service health */
-router.get('/health-check', (req, res) => res.send('OK'));
+// Check service health
+router.route('/health').get((req, res) => res.sendStatus(httpStatus.OK));
+
+router.use('/auth', authRoutes);
 
 module.exports = router;

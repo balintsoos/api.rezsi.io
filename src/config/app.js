@@ -10,6 +10,7 @@ const helmet = require('helmet');
 
 const winstonInstance = require('./winston');
 const config = require('./main');
+const auth = require('./auth');
 const routes = require('../routes/index.route');
 
 const app = express();
@@ -20,12 +21,12 @@ if (config.env === 'development') {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(cookieParser());
 app.use(compress());
 app.use(methodOverride());
 app.use(helmet());
 app.use(cors());
+app.use(auth.initialize());
 
 // enable detailed API logging in dev env
 if (config.env === 'development') {

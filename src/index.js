@@ -12,14 +12,14 @@ mongoose.Promise = global.Promise;
 
 const db = mongoose.connection;
 
-db.on('connecting', () => debug(`Connecting to to database: ${mongoUri}`));
-db.on('connected', () => debug(`Connected to to database: ${mongoUri}`));
+db.on('connecting', () => debug(`Connecting to database: ${mongoUri}`));
+db.on('connected', () => debug(`Connected to database: ${mongoUri}`));
 db.once('open', () => debug(`Connection is open to database: ${mongoUri}`));
 db.on('error', () => debug(`Unable to connect to database: ${mongoUri}`));
 db.on('reconnected', () => debug(`Reconnected to database: ${mongoUri}`));
 db.on('disconnected', () => debug(`Disconnected from database: ${mongoUri}`));
 
-if (config.MONGOOSE_DEBUG) {
+if (config.mongooseDebug) {
   mongoose.set('debug', (collectionName, method, query, doc) => {
     debug(`${collectionName}.${method}`, util.inspect(query, false, 20), doc);
   });
@@ -31,12 +31,8 @@ mongoose.connect(mongoUri, {
   keepAlive: true,
 });
 
-// module.parent check is required to support mocha watch
-// src: https://github.com/mochajs/mocha/issues/1912
-if (!module.parent) {
-  app.listen(config.port, () => {
-    debug(`Server started on port ${config.port} (${config.env})`);
-  });
-}
+app.listen(config.port, () => {
+  debug(`Server started on port ${config.port} (${config.env})`);
+});
 
 module.exports = app;
