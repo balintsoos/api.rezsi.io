@@ -1,6 +1,8 @@
 const passport = require('passport');
 const { Strategy, ExtractJwt } = require('passport-jwt');
+
 const config = require('./main');
+const Users = require('../models/user.model');
 
 /* passport-jwt options
  * https://github.com/themikenicholson/passport-jwt#configure-strategy
@@ -19,11 +21,11 @@ passport.use(new Strategy(options, async (payload, done) => {
     return done(err, false);
   }
 
-  if (user) {
-    return done(null, user);
+  if (!user) {
+    return done(null, false);
   }
 
-  return done(null, false);
+  return done(null, user);
 }));
 
 module.exports = {

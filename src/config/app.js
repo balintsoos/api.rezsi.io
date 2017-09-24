@@ -8,9 +8,9 @@ const cors = require('cors');
 const expressWinston = require('express-winston');
 const helmet = require('helmet');
 
-const winstonInstance = require('./winston');
 const config = require('./main');
 const auth = require('./auth');
+const winstonInstance = require('./winston');
 const routes = require('../routes/index.route');
 
 const app = express();
