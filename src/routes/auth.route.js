@@ -1,5 +1,6 @@
 const express = require('express');
 const httpStatus = require('http-status');
+
 const auth = require('../config/auth');
 const authCtrl = require('../controllers/auth.controller');
 
