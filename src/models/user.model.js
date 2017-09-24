@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema({
     type: Types.String,
     required: true,
     enum: ['LEADER', 'MEMBER'],
+    default: 'MEMBER',
   },
   group: {
     type: Types.ObjectId,
