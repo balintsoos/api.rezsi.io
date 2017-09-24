@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const httpStatus = require('http-status');
 
 const config = require('../config/main');
-const Users = require('../models/user.model');
+const User = require('../models/user.model');
 
 async function login(req, res) {
   if (!req.body.email || !req.body.password) {
@@ -12,7 +12,7 @@ async function login(req, res) {
   let user;
 
   try {
-    user = await Users.findOne({ email: req.body.email }).exec();
+    user = await User.findOne({ email: req.body.email }).exec();
   } catch (err) {
     return res.sendStatus(httpStatus.UNAUTHORIZED);
   }

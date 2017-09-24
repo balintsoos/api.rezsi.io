@@ -2,7 +2,7 @@ const passport = require('passport');
 const { Strategy, ExtractJwt } = require('passport-jwt');
 
 const config = require('./main');
-const Users = require('../models/user.model');
+const User = require('../models/user.model');
 
 /* passport-jwt options
  * https://github.com/themikenicholson/passport-jwt#configure-strategy
@@ -16,7 +16,7 @@ passport.use(new Strategy(options, async (payload, done) => {
   let user;
 
   try {
-    user = await Users.findOne({ id: payload.sub }).exec();
+    user = await User.findOne({ id: payload.sub }).exec();
   } catch (err) {
     return done(err, false);
   }
