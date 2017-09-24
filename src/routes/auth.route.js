@@ -13,4 +13,7 @@ router.route('/')
 router.route('/login')
   .post(authCtrl.login);
 
+router.route('/logout')
+  .post(auth.authenticate(), authCtrl.logout);
+
 module.exports = router;

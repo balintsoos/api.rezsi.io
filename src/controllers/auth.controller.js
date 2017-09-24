@@ -32,6 +32,12 @@ async function login(req, res) {
   return res.json({ token });
 }
 
+function logout(req, res) {
+  req.logout();
+  return res.sendStatus(httpStatus.RESET_CONTENT);
+}
+
 module.exports = {
   login,
+  logout,
 };

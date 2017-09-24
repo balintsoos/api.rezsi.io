@@ -29,7 +29,6 @@ const userSchema = new mongoose.Schema({
   },
   group: {
     type: Types.ObjectId,
-    required: true,
     ref: 'Group',
   },
 }, {

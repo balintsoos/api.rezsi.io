@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.route('/')
   .get(auth.authenticate(), userCtrl.getAll)
-  .post(auth.authenticate(), userCtrl.create);
+  .post(userCtrl.create);
 
 router.route('/:id')
   .get(auth.authenticate(), userCtrl.getOne);

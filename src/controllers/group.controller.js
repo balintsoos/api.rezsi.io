@@ -1,45 +1,45 @@
 const httpStatus = require('http-status');
 
-const User = require('../models/user.model');
+const Group = require('../models/group.model');
 
 function getAll(req, res) {
   const { limit = 10, skip = 0 } = req.query;
 
-  User.find()
+  Group.find()
     .sort({ createdAt: -1 })
     .skip(+skip)
     .limit(+limit)
     .exec()
-    .then(users => res.json(users))
+    .then(groups => res.json(groups))
     .catch(err => res.status(httpStatus.BAD_REQUEST).json(err));
 }
 
 function getOne(req, res) {
-  User.findById(req.params.id)
+  Group.findById(req.params.id)
     .exec()
-    .then((user) => {
-      if (!user) {
+    .then((group) => {
+      if (!group) {
         return Promise.reject();
       }
 
-      return user;
+      return group;
     })
-    .then(user => res.json(user))
+    .then(group => res.json(group))
     .catch(err => res.status(httpStatus.BAD_REQUEST).json(err));
 }
 
 async function create(req, res) {
-  let user = new User(Object.assign({}, req.body, {
-    role: 'LEADER',
+  let group = new Group(Object.assign({}, req.body, {
+    leader: req.user.id,
   }));
 
   try {
-    user = await user.save();
+    group = await group.save();
   } catch (err) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
   }
 
-  return res.status(httpStatus.CREATED).json(user);
+  return res.status(httpStatus.CREATED).json(group);
 }
 
 module.exports = {
