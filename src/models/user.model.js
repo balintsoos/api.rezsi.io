@@ -31,6 +31,10 @@ const userSchema = new mongoose.Schema({
     type: Types.ObjectId,
     ref: 'Group',
   },
+  confirmed: {
+    type: Types.Boolean,
+    default: false,
+  },
 }, {
   timestamps: true,
 });
