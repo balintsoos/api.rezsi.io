@@ -4,11 +4,11 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const compress = require('compression');
 const methodOverride = require('method-override');
-const cors = require('cors');
 const expressWinston = require('express-winston');
 const helmet = require('helmet');
 
 const config = require('./main');
+const cors = require('./cors');
 const auth = require('./auth');
 const winstonInstance = require('./winston');
 const routes = require('../routes/index.route');

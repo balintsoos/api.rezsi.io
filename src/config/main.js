@@ -26,6 +26,12 @@ const envVarsSchema = Joi.object({
     .required(),
   GMAIL_ADDRESS: Joi.string()
     .required(),
+  CLIENT_ORIGIN: Joi.string()
+    .when('NODE_ENV', {
+      is: Joi.string().equal('development'),
+      then: Joi.string().default('http://localhost:3000'),
+      otherwise: Joi.string().default('https://app-rezsi.herokuapp.com/'),
+    }),
 }).unknown().required();
 
 const { error, value: envVars } = Joi.validate(process.env, envVarsSchema);
@@ -47,5 +53,8 @@ module.exports = {
     user: envVars.GMAIL_USER,
     pass: envVars.GMAIL_PASS,
     address: envVars.GMAIL_ADDRESS,
+  },
+  client: {
+    origin: envVars.CLIENT_ORIGIN,
   },
 };
