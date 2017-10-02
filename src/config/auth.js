@@ -1,5 +1,8 @@
 const passport = require('passport');
 const { Strategy, ExtractJwt } = require('passport-jwt');
+const jwt = require('jsonwebtoken');
+
+const debug = require('debug')('API:auth');
 
 const config = require('./main');
 const User = require('../models/user.model');
@@ -13,6 +16,8 @@ const options = {
 };
 
 passport.use(new Strategy(options, async (payload, done) => {
+  debug(`payload ${payload}`);
+
   let user;
 
   try {
@@ -31,4 +36,5 @@ passport.use(new Strategy(options, async (payload, done) => {
 module.exports = {
   initialize: () => passport.initialize(),
   authenticate: () => passport.authenticate('jwt', { session: false }),
+  createToken: payload => jwt.sign(payload, config.jwtSecret, { expiresIn: '1h' }),
 };

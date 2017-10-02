@@ -1,7 +1,6 @@
-const jwt = require('jsonwebtoken');
 const httpStatus = require('http-status');
 
-const config = require('../config/main');
+const auth = require('../config/auth');
 const User = require('../models/user.model');
 
 async function login(req, res) {
@@ -27,9 +26,12 @@ async function login(req, res) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 
-  const token = jwt.sign({ id: user.id }, config.jwtSecret);
+  const payload = user.getPayload();
 
-  return res.json({ token });
+  return res.json({
+    user: payload,
+    token: auth.createToken(payload),
+  });
 }
 
 function logout(req, res) {

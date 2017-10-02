@@ -41,7 +41,6 @@ const userSchema = new mongoose.Schema({
 
 userSchema.plugin(uniqueValidator);
 
-/* eslint-disable consistent-return */
 userSchema.pre('save', function(next) {
   if (!this.isModified('password') && !this.isNew) {
     return next();
@@ -49,7 +48,7 @@ userSchema.pre('save', function(next) {
 
   const user = this;
 
-  bcrypt.hash(user.password, 10)
+  return bcrypt.hash(user.password, 10)
     .then((hash) => {
       user.password = hash;
       next();
@@ -58,6 +57,15 @@ userSchema.pre('save', function(next) {
 
 userSchema.methods.comparePassword = function(password) {
   return bcrypt.compare(password, this.password);
+};
+
+userSchema.methods.getPayload = function() {
+  return {
+    id: this.id,
+    email: this.email,
+    role: this.role,
+    displayName: this.displayName,
+  };
 };
 
 module.exports = mongoose.model('User', userSchema);
