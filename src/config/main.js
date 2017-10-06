@@ -30,7 +30,13 @@ const envVarsSchema = Joi.object({
     .when('NODE_ENV', {
       is: Joi.string().equal('development'),
       then: Joi.string().default('http://localhost:3000'),
-      otherwise: Joi.string().default('https://app-rezsi.herokuapp.com/'),
+      otherwise: Joi.string().default('https://app-rezsi.herokuapp.com'),
+    }),
+  SERVER_ORIGIN: Joi.string()
+    .when('NODE_ENV', {
+      is: Joi.string().equal('development'),
+      then: Joi.string().default('http://localhost'),
+      otherwise: Joi.string().default('https://api-rezsi.herokuapp.com'),
     }),
 }).unknown().required();
 
@@ -39,6 +45,10 @@ const { error, value: envVars } = Joi.validate(process.env, envVarsSchema);
 if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
+
+const serverUrl = envVars.NODE_ENV === 'development'
+  ? `${envVars.SERVER_ORIGIN}:${envVars.PORT}`
+  : envVars.SERVER_ORIGIN;
 
 module.exports = {
   env: envVars.NODE_ENV,
@@ -56,5 +66,8 @@ module.exports = {
   },
   client: {
     origin: envVars.CLIENT_ORIGIN,
+  },
+  server: {
+    origin: serverUrl,
   },
 };
