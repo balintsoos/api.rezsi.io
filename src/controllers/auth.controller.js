@@ -20,6 +20,10 @@ async function getToken(req, res) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 
+  if (!user.confirmed) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
+
   const result = await user.comparePassword(req.body.password);
 
   if (result === false) {
