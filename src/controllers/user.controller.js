@@ -1,8 +1,8 @@
 const httpStatus = require('http-status');
 
 const User = require('../models/user.model');
-const config = require('../config/main');
 const mail = require('../config/mail');
+const { apiUrl, clientUrl } = require('../utils/getUrl');
 
 async function getAll(req, res) {
   const { limit = 10, skip = 0 } = req.query;
@@ -53,8 +53,8 @@ async function create(req, res) {
     await mail.send({
       to: user.email,
       subject: 'Confirm your email address',
-      text: `${config.server.origin}/users/${user.id}/confirm`,
-      html: `${config.server.origin}/users/${user.id}/confirm`,
+      text: apiUrl(`/users/${user.id}/confirm`),
+      html: apiUrl(`/users/${user.id}/confirm`),
     });
   } catch (err) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
@@ -70,7 +70,7 @@ async function confirm(req, res) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
   }
 
-  return res.redirect(`${config.client.origin}/login`);
+  return res.redirect(clientUrl('/login'));
 }
 
 module.exports = {
