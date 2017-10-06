@@ -3,7 +3,7 @@ const debug = require('debug')('API:mail');
 
 const config = require('./main');
 
-const transporter = nodemailer.createTransporter({
+const transport = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: config.gmail.user,
@@ -26,7 +26,7 @@ function send({
   debug('SEND %O', options);
 
   return new Promise((resolve, reject) => {
-    transporter.sendMail(options, (error, info) => {
+    transport.sendMail(options, (error, info) => {
       if (error) {
         debug('SEND FAILED %O', error);
         return reject(error);
