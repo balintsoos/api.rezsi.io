@@ -5,12 +5,12 @@ const config = require('./config/main');
 const app = require('./config/app');
 
 const debug = require('debug')('API:index');
-
-const mongoUri = config.mongo.host;
+const dbDebug = require('debug')('API:db');
 
 mongoose.Promise = global.Promise;
 
 const db = mongoose.connection;
+const mongoUri = config.mongo.host;
 
 db.on('connecting', () => debug(`Connecting to database: ${mongoUri}`));
 db.on('connected', () => debug(`Connected to database: ${mongoUri}`));
@@ -21,7 +21,7 @@ db.on('disconnected', () => debug(`Disconnected from database: ${mongoUri}`));
 
 if (config.mongooseDebug) {
   mongoose.set('debug', (collectionName, method, query, doc) => {
-    debug(`${collectionName}.${method}`, util.inspect(query, false, 20), doc);
+    dbDebug(`${collectionName}.${method}`, util.inspect(query, false, 20), doc);
   });
 }
 
