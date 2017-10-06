@@ -3,7 +3,7 @@ const httpStatus = require('http-status');
 const auth = require('../config/auth');
 const User = require('../models/user.model');
 
-async function login(req, res) {
+async function token(req, res) {
   if (!req.body.email || !req.body.password) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
@@ -34,12 +34,6 @@ async function login(req, res) {
   });
 }
 
-function logout(req, res) {
-  req.logout();
-  return res.sendStatus(httpStatus.RESET_CONTENT);
-}
-
 module.exports = {
-  login,
-  logout,
+  token,
 };

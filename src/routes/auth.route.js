@@ -10,10 +10,7 @@ const router = express.Router();
 router.route('/')
   .get(auth.authenticate(), (req, res) => res.sendStatus(httpStatus.OK));
 
-router.route('/login')
-  .post(authCtrl.login);
-
-router.route('/logout')
-  .post(authCtrl.logout);
+router.route('/token')
+  .post(authCtrl.token);
 
 module.exports = router;

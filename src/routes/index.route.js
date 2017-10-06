@@ -9,10 +9,11 @@ const groupRoutes = require('./group.route');
 
 const router = express.Router();
 
+// enable cors on all OPTIONS
+router.options('*', cors());
+
 // Check service health
 router.route('/health').get((req, res) => res.sendStatus(httpStatus.OK));
-
-router.options('*', cors());
 
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
