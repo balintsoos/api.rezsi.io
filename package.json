@@ -1,6 +1,6 @@
 {
   "name": "api.rezsi.io",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "src/index.js",
   "repository": "https://github.com/balintsoos/api.rezsi.io.git",
   "bugs": "https://github.com/balintsoos/api.rezsi.io/issues",
