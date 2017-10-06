@@ -3,7 +3,7 @@ const httpStatus = require('http-status');
 const auth = require('../config/auth');
 const User = require('../models/user.model');
 
-async function token(req, res) {
+async function getToken(req, res) {
   if (!req.body.email || !req.body.password) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
@@ -34,6 +34,15 @@ async function token(req, res) {
   });
 }
 
+function getUser(req, res) {
+  if (!req.user) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
+
+  return res.json(req.user.getPayload());
+}
+
 module.exports = {
-  token,
+  getToken,
+  getUser,
 };
