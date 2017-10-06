@@ -16,12 +16,12 @@ const options = {
 };
 
 passport.use(new Strategy(options, async (payload, done) => {
-  debug(`payload ${payload}`);
+  debug('payload %O', payload);
 
   let user;
 
   try {
-    user = await User.findOne({ id: payload.sub }).exec();
+    user = await User.findById(payload.id).exec();
   } catch (err) {
     return done(err, false);
   }
