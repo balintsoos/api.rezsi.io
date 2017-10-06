@@ -38,4 +38,6 @@ function send({
   });
 }
 
-module.exports = send;
+module.exports = {
+  send,
+};

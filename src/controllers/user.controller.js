@@ -1,8 +1,10 @@
 const httpStatus = require('http-status');
+const debug = require('debug')('API:user.controller');
 
 const User = require('../models/user.model');
 const mail = require('../config/mail');
 const { apiUrl, clientUrl } = require('../utils/getUrl');
+const confirmEmail = require('../utils/confirmEmail');
 
 async function getAll(req, res) {
   const { limit = 10, skip = 0 } = req.query;
@@ -44,19 +46,23 @@ async function create(req, res) {
   }));
 
   try {
-    user = await user.save();
+    await mail.send({
+      to: user.email,
+      subject: 'Confirm your email address',
+      html: confirmEmail({
+        name: user.displayName,
+        url: apiUrl(`/users/${user.id}/confirm`),
+      }),
+    });
   } catch (err) {
+    debug('EMAIL_SEND_FAILED %O', err);
     return res.status(httpStatus.BAD_REQUEST).json(err);
   }
 
   try {
-    await mail.send({
-      to: user.email,
-      subject: 'Confirm your email address',
-      text: apiUrl(`/users/${user.id}/confirm`),
-      html: apiUrl(`/users/${user.id}/confirm`),
-    });
+    user = await user.save();
   } catch (err) {
+    debug('USER_SAVE_FAILED %O', err);
     return res.status(httpStatus.BAD_REQUEST).json(err);
   }
 
@@ -65,8 +71,9 @@ async function create(req, res) {
 
 async function confirm(req, res) {
   try {
-    await User.findOneAndUpdate({ id: req.params.id }, { confirmed: true }).exec();
+    await User.findByIdAndUpdate(req.params.id, { confirmed: true }).exec();
   } catch (err) {
+    debug('USER_CONFIRM_FAILED %O', err);
     return res.status(httpStatus.BAD_REQUEST).json(err);
   }
 
