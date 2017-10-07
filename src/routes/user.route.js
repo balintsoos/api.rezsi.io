@@ -6,7 +6,6 @@ const userCtrl = require('../controllers/user.controller');
 const router = express.Router();
 
 router.route('/')
-  .get(auth.authenticate(), userCtrl.getAll)
   .post(userCtrl.create);
 
 router.route('/:id')
