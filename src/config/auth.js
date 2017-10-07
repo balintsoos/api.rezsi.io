@@ -30,6 +30,10 @@ passport.use(new Strategy(options, async (payload, done) => {
     return done(null, false);
   }
 
+  if (!user.confirmed) {
+    return done(null, false);
+  }
+
   return done(null, user);
 }));
 
