@@ -84,9 +84,18 @@ async function confirm(req, res) {
   return res.redirect(clientUrl('/login'));
 }
 
+function isLeader(req, res, next) {
+  if (req.user.role !== 'LEADER') {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
+
+  return next();
+}
+
 module.exports = {
   getAll,
   getOne,
   create,
   confirm,
+  isLeader,
 };

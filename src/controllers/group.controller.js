@@ -1,11 +1,12 @@
 const httpStatus = require('http-status');
+const mongoose = require('mongoose');
 
 const Group = require('../models/group.model');
 
-function getAll(req, res) {
+function getAllOfUser(req, res) {
   const { limit = 10, skip = 0 } = req.query;
 
-  Group.find()
+  Group.find({ leader: req.user.id })
     .sort({ createdAt: -1 })
     .skip(+skip)
     .limit(+limit)
@@ -14,18 +15,23 @@ function getAll(req, res) {
     .catch(err => res.status(httpStatus.BAD_REQUEST).json(err));
 }
 
-function getOne(req, res) {
-  Group.findById(req.params.id)
-    .exec()
-    .then((group) => {
-      if (!group) {
-        return Promise.reject();
-      }
+async function getOneOfUser(req, res) {
+  let group;
 
-      return group;
-    })
-    .then(group => res.json(group))
-    .catch(err => res.status(httpStatus.BAD_REQUEST).json(err));
+  try {
+    group = await Group.findOne({
+      _id: mongoose.Types.ObjectId(req.params.id),
+      leader: req.user.id,
+    }).exec();
+  } catch (err) {
+    return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  if (!group) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
+
+  return res.json(group);
 }
 
 async function create(req, res) {
@@ -43,7 +49,7 @@ async function create(req, res) {
 }
 
 module.exports = {
-  getAll,
-  getOne,
+  getAllOfUser,
+  getOneOfUser,
   create,
 };
