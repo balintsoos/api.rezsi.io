@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const mongoose = require('mongoose');
 const debug = require('debug')('API:user.controller');
 
 const User = require('../models/user.model');
@@ -41,9 +42,12 @@ async function getOne(req, res) {
 }
 
 async function create(req, res) {
-  let user = new User(Object.assign({}, req.body, {
-    role: 'LEADER',
-  }));
+  if (req.body.group) {
+    req.body.group = mongoose.Types.ObjectId(req.body.group);
+    req.body.role = 'MEMBER';
+  }
+
+  let user = new User(req.body);
 
   try {
     await mail.send({
