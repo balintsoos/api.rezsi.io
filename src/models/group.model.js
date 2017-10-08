@@ -17,4 +17,12 @@ const groupSchema = new mongoose.Schema({
   timestamps: true,
 });
 
+groupSchema.methods.getPayload = function() {
+  return {
+    id: this.id,
+    name: this.name,
+    createdAt: this.createdAt,
+  };
+};
+
 module.exports = mongoose.model('Group', groupSchema);

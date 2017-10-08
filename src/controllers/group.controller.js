@@ -11,7 +11,7 @@ function getAllOfUser(req, res) {
     .skip(+skip)
     .limit(+limit)
     .exec()
-    .then(groups => res.json(groups))
+    .then(groups => res.json(groups.map(group => group.getPayload())))
     .catch(err => res.status(httpStatus.BAD_REQUEST).json(err));
 }
 
@@ -31,7 +31,7 @@ async function getOneOfUser(req, res) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 
-  return res.json(group);
+  return res.json(group.getPayload());
 }
 
 async function create(req, res) {
@@ -45,7 +45,7 @@ async function create(req, res) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
   }
 
-  return res.status(httpStatus.CREATED).json(group);
+  return res.status(httpStatus.CREATED).json(group.getPayload());
 }
 
 module.exports = {
