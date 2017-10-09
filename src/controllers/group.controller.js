@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const mongoose = require('mongoose');
 
 const Group = require('../models/group.model');
+const User = require('../models/user.model');
 
 function getAllOfUser(req, res) {
   const { limit = 10, skip = 0 } = req.query;
@@ -17,6 +18,7 @@ function getAllOfUser(req, res) {
 
 async function getOneOfUser(req, res) {
   let group;
+  let users;
 
   try {
     group = await Group.findOne({
@@ -31,7 +33,19 @@ async function getOneOfUser(req, res) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 
-  return res.json(group.getPayload());
+  try {
+    users = await User.find({
+      role: 'MEMBER',
+      group: group.id,
+      confirmed: true,
+    }).sort({ createdAt: -1 }).exec();
+  } catch (err) {
+    return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  return res.json(Object.assign({}, group.getPayload(), {
+    users: users.map(user => user.getPayload()),
+  }));
 }
 
 async function create(req, res) {
