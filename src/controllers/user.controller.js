@@ -50,6 +50,13 @@ async function create(req, res) {
   let user = new User(req.body);
 
   try {
+    user = await user.save();
+  } catch (err) {
+    debug('USER_SAVE_FAILED %O', err);
+    return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  try {
     await mail.send({
       to: user.email,
       subject: 'Confirm your email address',
@@ -60,13 +67,6 @@ async function create(req, res) {
     });
   } catch (err) {
     debug('EMAIL_SEND_FAILED %O', err);
-    return res.status(httpStatus.BAD_REQUEST).json(err);
-  }
-
-  try {
-    user = await user.save();
-  } catch (err) {
-    debug('USER_SAVE_FAILED %O', err);
     return res.status(httpStatus.BAD_REQUEST).json(err);
   }
 
