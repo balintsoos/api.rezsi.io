@@ -13,4 +13,7 @@ router.route('/')
 router.route('/:id')
   .get(auth.authenticate(), groupCtrl.getOneOfUser);
 
+router.route('/:groupId/users/:userId')
+  .get(auth.authenticate(), groupCtrl.getMemberOfGroup);
+
 module.exports = router;

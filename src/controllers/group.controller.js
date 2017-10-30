@@ -62,8 +62,30 @@ async function create(req, res) {
   return res.status(httpStatus.CREATED).json(group.getPayload());
 }
 
+async function getMemberOfGroup(req, res) {
+  let user;
+
+  try {
+    user = await User.findOne({
+      _id: mongoose.Types.ObjectId(req.params.userId),
+      role: 'MEMBER',
+      group: mongoose.Types.ObjectId(req.params.groupId),
+      confirmed: true,
+    }).exec();
+  } catch (err) {
+    return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  if (!user) {
+    return res.status(httpStatus.BAD_REQUEST);
+  }
+
+  return res.json(user.getPayload());
+}
+
 module.exports = {
   getAllOfUser,
   getOneOfUser,
   create,
+  getMemberOfGroup,
 };
