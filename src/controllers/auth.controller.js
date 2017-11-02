@@ -49,7 +49,7 @@ function getUser(req, res) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 
-  return res.json(req.user.getPayload());
+  return res.json(req.user.getLargePayload());
 }
 
 module.exports = {

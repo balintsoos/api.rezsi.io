@@ -21,7 +21,10 @@ passport.use(new Strategy(options, async (payload, done) => {
   let user;
 
   try {
-    user = await User.findById(payload.id).exec();
+    user = await User
+      .findById(payload.id)
+      .populate('group')
+      .exec();
   } catch (err) {
     return done(err, false);
   }

@@ -4,6 +4,25 @@ const bcrypt = require('bcrypt');
 
 const { Types } = mongoose.Schema;
 
+const reportSchema = new mongoose.Schema({
+  date: {
+    type: Types.Date,
+    required: true,
+  },
+  hotWater: {
+    type: Types.Number,
+    required: true,
+  },
+  coldWater: {
+    type: Types.Number,
+    required: true,
+  },
+  heat: {
+    type: Types.Number,
+    required: true,
+  },
+});
+
 const userSchema = new mongoose.Schema({
   email: {
     type: Types.String,
@@ -35,6 +54,7 @@ const userSchema = new mongoose.Schema({
     type: Types.Boolean,
     default: false,
   },
+  consumptionReports: [reportSchema],
 }, {
   timestamps: true,
 });
@@ -65,6 +85,17 @@ userSchema.methods.getPayload = function() {
     email: this.email,
     role: this.role,
     displayName: this.displayName,
+  };
+};
+
+userSchema.methods.getLargePayload = function() {
+  return {
+    id: this.id,
+    email: this.email,
+    role: this.role,
+    displayName: this.displayName,
+    consumptionReports: this.consumptionReports,
+    group: this.group.name,
   };
 };
 
