@@ -85,7 +85,15 @@ async function confirm(req, res) {
 }
 
 function isLeader(req, res, next) {
-  if (req.user.role !== 'LEADER') {
+  if (!req.user.isLeader()) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
+
+  return next();
+}
+
+function isMember(req, res, next) {
+  if (!req.user.isMember()) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 
@@ -98,4 +106,5 @@ module.exports = {
   create,
   confirm,
   isLeader,
+  isMember,
 };

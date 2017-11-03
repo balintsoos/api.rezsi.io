@@ -13,7 +13,10 @@ async function getToken(req, res) {
   let user;
 
   try {
-    user = await User.findOne({ email: req.body.email }).exec();
+    user = await User
+      .findOne({ email: req.body.email })
+      .populate('group')
+      .exec();
   } catch (err) {
     debug('DB_FIND_FAILED %O', err);
     return res.sendStatus(httpStatus.BAD_REQUEST);
@@ -39,7 +42,7 @@ async function getToken(req, res) {
   const payload = user.getPayload();
 
   return res.json({
-    user: payload,
+    user: user.isLeader() ? payload : user.getLargePayload(),
     token: auth.createToken(payload),
   });
 }
@@ -49,7 +52,11 @@ function getUser(req, res) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 
-  return res.json(req.user.getLargePayload());
+  const payload = req.user.isLeader()
+    ? req.user.getPayload()
+    : req.user.getLargePayload();
+
+  return res.json(payload);
 }
 
 module.exports = {

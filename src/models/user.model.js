@@ -4,25 +4,6 @@ const bcrypt = require('bcrypt');
 
 const { Types } = mongoose.Schema;
 
-const reportSchema = new mongoose.Schema({
-  date: {
-    type: Types.Date,
-    required: true,
-  },
-  hotWater: {
-    type: Types.Number,
-    required: true,
-  },
-  coldWater: {
-    type: Types.Number,
-    required: true,
-  },
-  heat: {
-    type: Types.Number,
-    required: true,
-  },
-});
-
 const userSchema = new mongoose.Schema({
   email: {
     type: Types.String,
@@ -54,7 +35,6 @@ const userSchema = new mongoose.Schema({
     type: Types.Boolean,
     default: false,
   },
-  consumptionReports: [reportSchema],
 }, {
   timestamps: true,
 });
@@ -94,9 +74,16 @@ userSchema.methods.getLargePayload = function() {
     email: this.email,
     role: this.role,
     displayName: this.displayName,
-    consumptionReports: this.consumptionReports,
     group: this.group.name,
   };
+};
+
+userSchema.methods.isLeader = function() {
+  return this.role === 'LEADER';
+};
+
+userSchema.methods.isMember = function() {
+  return this.role === 'MEMBER';
 };
 
 module.exports = mongoose.model('User', userSchema);

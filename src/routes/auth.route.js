@@ -6,9 +6,7 @@ const authCtrl = require('../controllers/auth.controller');
 const router = express.Router();
 
 router.route('/')
-  .get(auth.authenticate(), authCtrl.getUser);
-
-router.route('/token')
+  .get(auth.authenticate(), authCtrl.getUser)
   .post(authCtrl.getToken);
 
 module.exports = router;
