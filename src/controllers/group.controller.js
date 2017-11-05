@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 
 const Group = require('../models/group.model');
 const User = require('../models/user.model');
+const Report = require('../models/report.model');
 
 function getAllOfUser(req, res) {
   const { limit = 10, skip = 0 } = req.query;
@@ -64,6 +65,7 @@ async function create(req, res) {
 
 async function getMemberOfGroup(req, res) {
   let user;
+  let reports;
 
   try {
     user = await User.findOne({
@@ -80,7 +82,16 @@ async function getMemberOfGroup(req, res) {
     return res.status(httpStatus.BAD_REQUEST);
   }
 
-  return res.json(user.getPayload());
+  try {
+    reports = await Report
+      .find({ user: user.id })
+      .sort({ createdAt: -1 })
+      .exec();
+  } catch (err) {
+    return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  return res.json(Object.assign({ reports }, user.getPayload()));
 }
 
 module.exports = {
