@@ -94,9 +94,24 @@ async function getMemberOfGroup(req, res) {
   return res.json(Object.assign({ reports }, user.getPayload()));
 }
 
+async function deleteMemberOfGroup(req, res) {
+  let deletedUser;
+
+  try {
+    deletedUser = await User.findByIdAndRemove(req.params.userId).exec();
+  } catch (err) {
+    return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  await Report.remove({ user: deletedUser.id }).exec();
+
+  return res.json({ id: deletedUser.id });
+}
+
 module.exports = {
   getAllOfUser,
   getOneOfUser,
   create,
   getMemberOfGroup,
+  deleteMemberOfGroup,
 };
