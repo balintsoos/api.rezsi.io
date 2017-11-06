@@ -4,7 +4,7 @@ const debug = require('debug')('API:auth.controller');
 const auth = require('../config/auth');
 const User = require('../models/user.model');
 
-async function getToken(req, res) {
+async function generateToken(req, res) {
   if (!req.body.email || !req.body.password) {
     debug('PAYLOAD_VALIDATION_FAILED');
     return res.sendStatus(httpStatus.BAD_REQUEST);
@@ -60,6 +60,6 @@ function getUser(req, res) {
 }
 
 module.exports = {
-  getToken,
+  generateToken,
   getUser,
 };

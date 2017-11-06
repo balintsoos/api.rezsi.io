@@ -3,21 +3,23 @@ const mongoose = require('mongoose');
 
 const Group = require('../models/group.model');
 const User = require('../models/user.model');
-const Report = require('../models/report.model');
 
-function getAllOfUser(req, res) {
-  const { limit = 10, skip = 0 } = req.query;
+async function getAllOfLeader(req, res) {
+  let groups;
 
-  Group.find({ leader: req.user.id })
-    .sort({ createdAt: -1 })
-    .skip(+skip)
-    .limit(+limit)
-    .exec()
-    .then(groups => res.json(groups.map(group => group.getPayload())))
-    .catch(err => res.status(httpStatus.BAD_REQUEST).json(err));
+  try {
+    groups = await Group
+      .find({ leader: req.user.id })
+      .sort({ createdAt: -1 })
+      .exec();
+  } catch (err) {
+    return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  return res.json(groups.map(group => group.getPayload()));
 }
 
-async function getOneOfUser(req, res) {
+async function getOneOfLeader(req, res) {
   let group;
   let users;
 
@@ -63,55 +65,8 @@ async function create(req, res) {
   return res.status(httpStatus.CREATED).json(group.getPayload());
 }
 
-async function getMemberOfGroup(req, res) {
-  let user;
-  let reports;
-
-  try {
-    user = await User.findOne({
-      _id: mongoose.Types.ObjectId(req.params.userId),
-      role: 'MEMBER',
-      group: mongoose.Types.ObjectId(req.params.groupId),
-      confirmed: true,
-    }).exec();
-  } catch (err) {
-    return res.status(httpStatus.BAD_REQUEST).json(err);
-  }
-
-  if (!user) {
-    return res.status(httpStatus.BAD_REQUEST);
-  }
-
-  try {
-    reports = await Report
-      .find({ user: user.id })
-      .sort({ createdAt: -1 })
-      .exec();
-  } catch (err) {
-    return res.status(httpStatus.BAD_REQUEST).json(err);
-  }
-
-  return res.json(Object.assign({ reports }, user.getPayload()));
-}
-
-async function deleteMemberOfGroup(req, res) {
-  let deletedUser;
-
-  try {
-    deletedUser = await User.findByIdAndRemove(req.params.userId).exec();
-  } catch (err) {
-    return res.status(httpStatus.BAD_REQUEST).json(err);
-  }
-
-  await Report.remove({ user: deletedUser.id }).exec();
-
-  return res.json({ id: deletedUser.id });
-}
-
 module.exports = {
-  getAllOfUser,
-  getOneOfUser,
   create,
-  getMemberOfGroup,
-  deleteMemberOfGroup,
+  getAllOfLeader,
+  getOneOfLeader,
 };

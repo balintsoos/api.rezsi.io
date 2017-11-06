@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.route('/')
   .get(auth.authenticate(), authCtrl.getUser)
-  .post(authCtrl.getToken);
+  .post(authCtrl.generateToken);
 
 module.exports = router;

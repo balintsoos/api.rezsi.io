@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const debug = require('debug')('API:user.controller');
 
 const User = require('../models/user.model');
+const Report = require('../models/report.model');
 const mail = require('../config/mail');
 const { apiUrl, clientUrl } = require('../utils/getUrl');
 const confirmEmail = require('../utils/confirmEmail');
@@ -84,6 +85,69 @@ async function confirm(req, res) {
   return res.redirect(clientUrl('/login'));
 }
 
+async function getAllOfGroup(req, res) {
+  let users;
+
+  try {
+    users = await User.find({
+      role: 'MEMBER',
+      group: mongoose.Types.ObjectId(req.params.id),
+      confirmed: true,
+    }).sort({ createdAt: -1 }).exec();
+  } catch (err) {
+    return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  return res.json(users.map(user => user.getPayload()));
+}
+
+async function getOneOfGroup(req, res) {
+  let user;
+  let reports;
+
+  try {
+    user = await User.findOne({
+      _id: mongoose.Types.ObjectId(req.params.userId),
+      role: 'MEMBER',
+      group: mongoose.Types.ObjectId(req.params.groupId),
+      confirmed: true,
+    }).exec();
+  } catch (err) {
+    return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  if (!user) {
+    return res.status(httpStatus.BAD_REQUEST);
+  }
+
+  try {
+    reports = await Report
+      .find({ user: user.id })
+      .sort({ createdAt: -1 })
+      .exec();
+  } catch (err) {
+    return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  return res.json(Object.assign({ reports }, user.getPayload()));
+}
+
+async function deleteOneOfGroup(req, res) {
+  let deletedUser;
+
+  try {
+    deletedUser = await User
+      .findByIdAndRemove(req.params.userId)
+      .exec();
+  } catch (err) {
+    return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  await Report.remove({ user: deletedUser.id }).exec();
+
+  return res.json({ id: deletedUser.id });
+}
+
 function isLeader(req, res, next) {
   if (!req.user.isLeader()) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
@@ -101,10 +165,13 @@ function isMember(req, res, next) {
 }
 
 module.exports = {
-  getAll,
-  getOne,
   create,
   confirm,
+  getAll,
+  getOne,
+  getAllOfGroup,
+  getOneOfGroup,
+  deleteOneOfGroup,
   isLeader,
   isMember,
 };
