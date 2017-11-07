@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema({
     type: Types.Boolean,
     default: false,
   },
+  disabled: {
+    type: Types.Boolean,
+    default: false,
+  },
 }, {
   timestamps: true,
 });

@@ -93,6 +93,7 @@ async function getAllOfGroup(req, res) {
       role: 'MEMBER',
       group: mongoose.Types.ObjectId(req.params.id),
       confirmed: true,
+      disabled: false,
     }).sort({ createdAt: -1 }).exec();
   } catch (err) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
@@ -111,6 +112,7 @@ async function getOneOfGroup(req, res) {
       role: 'MEMBER',
       group: mongoose.Types.ObjectId(req.params.groupId),
       confirmed: true,
+      disabled: false,
     }).exec();
   } catch (err) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
@@ -137,13 +139,14 @@ async function deleteOneOfGroup(req, res) {
 
   try {
     deletedUser = await User
-      .findByIdAndRemove(req.params.userId)
+      .findOneAndUpdate({
+        _id: mongoose.Types.ObjectId(req.params.userId),
+        disabled: false,
+      }, { disabled: true }, { new: true })
       .exec();
   } catch (err) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
   }
-
-  await Report.remove({ user: deletedUser.id }).exec();
 
   return res.json({ id: deletedUser.id });
 }

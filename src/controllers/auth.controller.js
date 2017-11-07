@@ -14,7 +14,10 @@ async function generateToken(req, res) {
 
   try {
     user = await User
-      .findOne({ email: req.body.email })
+      .findOne({
+        email: req.body.email,
+        disabled: false,
+      })
       .populate('group')
       .exec();
   } catch (err) {
@@ -39,11 +42,9 @@ async function generateToken(req, res) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 
-  const payload = user.getPayload();
-
   return res.json({
-    user: user.isLeader() ? payload : user.getLargePayload(),
-    token: auth.createToken(payload),
+    user: user.isLeader() ? user.getPayload() : user.getLargePayload(),
+    token: auth.createToken(user.getPayload()),
   });
 }
 

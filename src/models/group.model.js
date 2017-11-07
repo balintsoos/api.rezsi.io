@@ -13,6 +13,10 @@ const groupSchema = new mongoose.Schema({
     required: true,
     ref: 'User',
   },
+  disabled: {
+    type: Types.Boolean,
+    default: false,
+  },
 }, {
   timestamps: true,
 });

@@ -1,6 +1,7 @@
 const passport = require('passport');
 const { Strategy, ExtractJwt } = require('passport-jwt');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 
 const debug = require('debug')('API:auth');
 
@@ -22,7 +23,11 @@ passport.use(new Strategy(options, async (payload, done) => {
 
   try {
     user = await User
-      .findById(payload.id)
+      .findOne({
+        _id: mongoose.Types.ObjectId(payload.id),
+        confirmed: true,
+        disabled: false,
+      })
       .populate('group')
       .exec();
   } catch (err) {
@@ -30,10 +35,6 @@ passport.use(new Strategy(options, async (payload, done) => {
   }
 
   if (!user) {
-    return done(null, false);
-  }
-
-  if (!user.confirmed) {
     return done(null, false);
   }
 

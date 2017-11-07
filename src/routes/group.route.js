@@ -12,13 +12,12 @@ router.route('/')
   .post(auth.authenticate(), userCtrl.isLeader, groupCtrl.create);
 
 router.route('/:id')
-  .get(auth.authenticate(), userCtrl.isLeader, groupCtrl.getOneOfLeader);
+  .get(auth.authenticate(), userCtrl.isLeader, groupCtrl.getOneOfLeader)
+  .put(auth.authenticate(), userCtrl.isLeader, groupCtrl.updateOneOfLeader)
+  .delete(auth.authenticate(), userCtrl.isLeader, groupCtrl.deleteOneOfLeader);
 
 router.route('/:id/users')
   .get(auth.authenticate(), userCtrl.isLeader, userCtrl.getAllOfGroup);
-
-router.route('/:id/reports')
-  .get(auth.authenticate(), userCtrl.isLeader, reportCtrl.getAllOfGroup);
 
 router.route('/:groupId/users/:userId')
   .get(auth.authenticate(), userCtrl.isLeader, userCtrl.getOneOfGroup)
