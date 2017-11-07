@@ -8,6 +8,21 @@ const groupSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  hotWaterPrice: {
+    type: Types.Number,
+    required: true,
+    min: 0,
+  },
+  coldWaterPrice: {
+    type: Types.Number,
+    required: true,
+    min: 0,
+  },
+  heatPrice: {
+    type: Types.Number,
+    required: true,
+    min: 0,
+  },
   leader: {
     type: Types.ObjectId,
     required: true,
@@ -26,6 +41,9 @@ groupSchema.methods.getPayload = function() {
     id: this.id,
     name: this.name,
     createdAt: this.createdAt,
+    hotWaterPrice: this.hotWaterPrice,
+    coldWaterPrice: this.coldWaterPrice,
+    heatPrice: this.heatPrice,
   };
 };
 
