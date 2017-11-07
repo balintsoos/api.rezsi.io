@@ -13,7 +13,7 @@ router.route('/')
 
 router.route('/:id')
   .get(auth.authenticate(), userCtrl.isLeader, groupCtrl.getOneOfLeader)
-  .put(auth.authenticate(), userCtrl.isLeader, groupCtrl.updateOneOfLeader)
+  .patch(auth.authenticate(), userCtrl.isLeader, groupCtrl.updateOneOfLeader)
   .delete(auth.authenticate(), userCtrl.isLeader, groupCtrl.deleteOneOfLeader);
 
 router.route('/:id/users')

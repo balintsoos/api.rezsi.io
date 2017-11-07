@@ -38,7 +38,6 @@ async function getAllOfLeader(req, res) {
 
 async function getOneOfLeader(req, res) {
   let group;
-  let users;
 
   try {
     group = await Group.findOne({
@@ -54,20 +53,7 @@ async function getOneOfLeader(req, res) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 
-  try {
-    users = await User.find({
-      role: 'MEMBER',
-      group: group.id,
-      confirmed: true,
-      disabled: false,
-    }).sort({ createdAt: -1 }).exec();
-  } catch (err) {
-    return res.status(httpStatus.BAD_REQUEST).json(err);
-  }
-
-  return res.json(Object.assign({}, group.getPayload(), {
-    users: users.map(user => user.getPayload()),
-  }));
+  return res.json(group.getPayload());
 }
 
 async function updateOneOfLeader(req, res) {
@@ -77,11 +63,16 @@ async function updateOneOfLeader(req, res) {
     updatedGroup = await Group
       .findOneAndUpdate({
         _id: mongoose.Types.ObjectId(req.params.id),
+        leader: req.user.id,
         disabled: false,
       }, req.body, { new: true })
       .exec();
   } catch (err) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  if (!updatedGroup) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 
   return res.json(updatedGroup.getPayload());
@@ -94,11 +85,16 @@ async function deleteOneOfLeader(req, res) {
     deletedGroup = await Group
       .findOneAndUpdate({
         _id: mongoose.Types.ObjectId(req.params.id),
+        leader: req.user.id,
         disabled: false,
       }, { disabled: true }, { new: true })
       .exec();
   } catch (err) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  if (!deletedGroup) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 
   await User.update({

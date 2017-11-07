@@ -71,7 +71,7 @@ async function create(req, res) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
   }
 
-  return res.status(httpStatus.CREATED).json(user.getPayload());
+  return res.sendStatus(httpStatus.CREATED);
 }
 
 async function confirm(req, res) {
@@ -146,6 +146,10 @@ async function deleteOneOfGroup(req, res) {
       .exec();
   } catch (err) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  if (!deletedUser) {
+    return res.status(httpStatus.BAD_REQUEST);
   }
 
   return res.json({ id: deletedUser.id });
