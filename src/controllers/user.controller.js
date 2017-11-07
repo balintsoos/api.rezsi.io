@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const debug = require('debug')('API:user.controller');
 
 const User = require('../models/user.model');
-const Report = require('../models/report.model');
 const mail = require('../config/mail');
 const { apiUrl, clientUrl } = require('../utils/getUrl');
 const confirmEmail = require('../utils/confirmEmail');
@@ -91,7 +90,7 @@ async function getAllOfGroup(req, res) {
   try {
     users = await User.find({
       role: 'MEMBER',
-      group: mongoose.Types.ObjectId(req.params.id),
+      group: req.group.id,
       confirmed: true,
       disabled: false,
     }).sort({ createdAt: -1 }).exec();
@@ -104,13 +103,12 @@ async function getAllOfGroup(req, res) {
 
 async function getOneOfGroup(req, res) {
   let user;
-  let reports;
 
   try {
     user = await User.findOne({
       _id: mongoose.Types.ObjectId(req.params.userId),
       role: 'MEMBER',
-      group: mongoose.Types.ObjectId(req.params.groupId),
+      group: req.group.id,
       confirmed: true,
       disabled: false,
     }).exec();
@@ -122,16 +120,7 @@ async function getOneOfGroup(req, res) {
     return res.status(httpStatus.BAD_REQUEST);
   }
 
-  try {
-    reports = await Report
-      .find({ user: user.id })
-      .sort({ createdAt: -1 })
-      .exec();
-  } catch (err) {
-    return res.status(httpStatus.BAD_REQUEST).json(err);
-  }
-
-  return res.json(Object.assign({ reports }, user.getPayload()));
+  return res.json(user.getPayload());
 }
 
 async function deleteOneOfGroup(req, res) {
@@ -141,6 +130,9 @@ async function deleteOneOfGroup(req, res) {
     deletedUser = await User
       .findOneAndUpdate({
         _id: mongoose.Types.ObjectId(req.params.userId),
+        role: 'MEMBER',
+        group: req.group.id,
+        confirmed: true,
         disabled: false,
       }, { disabled: true }, { new: true })
       .exec();

@@ -104,10 +104,33 @@ async function deleteOneOfLeader(req, res) {
   return res.json({ id: deletedGroup.id });
 }
 
+async function isLeaderOfGroup(req, res, next) {
+  let group;
+
+  try {
+    group = await Group.findOne({
+      _id: mongoose.Types.ObjectId(req.params.id),
+      leader: req.user.id,
+      disabled: false,
+    }).exec();
+  } catch (err) {
+    return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  if (!group) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
+
+  req.group = group;
+
+  return next();
+}
+
 module.exports = {
   create,
   getAllOfLeader,
   getOneOfLeader,
   updateOneOfLeader,
   deleteOneOfLeader,
+  isLeaderOfGroup,
 };
