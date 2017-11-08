@@ -3,37 +3,25 @@ const mongoose = require('mongoose');
 const { Types } = mongoose.Schema;
 
 const billSchema = new mongoose.Schema({
-  from: {
-    type: Types.Date,
-    required: true,
-  },
-  to: {
-    type: Types.Date,
-    required: true,
-  },
-  hotWaterPrice: {
+  hotWaterConsumption: {
     type: Types.Number,
     required: true,
     min: 0,
   },
-  coldWaterPrice: {
+  coldWaterConsumption: {
     type: Types.Number,
     required: true,
     min: 0,
   },
-  heatPrice: {
+  heatConsumption: {
     type: Types.Number,
     required: true,
     min: 0,
   },
-  currency: {
-    type: Types.String,
-    required: true,
-  },
-  group: {
+  summary: {
     type: Types.ObjectId,
     required: true,
-    ref: 'Group',
+    ref: 'Summary',
   },
 }, {
   timestamps: true,
@@ -42,12 +30,10 @@ const billSchema = new mongoose.Schema({
 billSchema.methods.getPayload = function() {
   return {
     id: this.id,
-    from: this.from,
-    to: this.to,
-    hotWaterPrice: this.hotWaterPrice,
-    coldWaterPrice: this.coldWaterPrice,
-    heatPrice: this.heatPrice,
-    currency: this.currency,
+    hotWaterConsumption: this.hotWaterConsumption,
+    coldWaterConsumption: this.coldWaterConsumption,
+    heatConsumption: this.heatConsumption,
+    summary: this.summary,
   };
 };
 

@@ -1,26 +1,26 @@
 const httpStatus = require('http-status');
 
-const Bill = require('../models/bill.model');
+const Summary = require('../models/summary.model');
 
 async function create(req, res) {
-  let bill = new Bill(Object.assign({}, req.body, {
+  let summary = new Summary(Object.assign({}, req.body, {
     group: req.group.id,
   }));
 
   try {
-    bill = await bill.save();
+    summary = await summary.save();
   } catch (err) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
   }
 
-  return res.status(httpStatus.CREATED).json(bill.getPayload());
+  return res.status(httpStatus.CREATED).json(summary.getPayload());
 }
 
 async function getAllOfGroup(req, res) {
-  let bills;
+  let summaries;
 
   try {
-    bills = await Bill
+    summaries = await Summary
       .find({ group: req.group.id })
       .sort({ createdAt: -1 })
       .exec();
@@ -28,7 +28,7 @@ async function getAllOfGroup(req, res) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
   }
 
-  return res.json(bills.map(bill => bill.getPayload()));
+  return res.json(summaries.map(summary => summary.getPayload()));
 }
 
 module.exports = {

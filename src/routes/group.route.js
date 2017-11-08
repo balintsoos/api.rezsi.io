@@ -4,7 +4,7 @@ const auth = require('../config/auth');
 const groupCtrl = require('../controllers/group.controller');
 const userCtrl = require('../controllers/user.controller');
 const reportCtrl = require('../controllers/report.controller');
-const billCtrl = require('../controllers/bill.controller');
+const summaryCtrl = require('../controllers/summary.controller');
 
 const router = express.Router();
 
@@ -17,9 +17,9 @@ router.route('/:id')
   .patch(auth.authenticate(), userCtrl.isLeader, groupCtrl.updateOneOfLeader)
   .delete(auth.authenticate(), userCtrl.isLeader, groupCtrl.deleteOneOfLeader);
 
-router.route('/:id/bills')
-  .get(auth.authenticate(), userCtrl.isLeader, groupCtrl.isLeaderOfGroup, billCtrl.getAllOfGroup)
-  .post(auth.authenticate(), userCtrl.isLeader, groupCtrl.isLeaderOfGroup, billCtrl.create);
+router.route('/:id/summaries')
+  .get(auth.authenticate(), userCtrl.isLeader, groupCtrl.isLeaderOfGroup, summaryCtrl.getAllOfGroup)
+  .post(auth.authenticate(), userCtrl.isLeader, groupCtrl.isLeaderOfGroup, summaryCtrl.create);
 
 router.route('/:id/users')
   .get(auth.authenticate(), userCtrl.isLeader, groupCtrl.isLeaderOfGroup, userCtrl.getAllOfGroup);
