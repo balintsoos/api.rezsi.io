@@ -163,6 +163,29 @@ function isMember(req, res, next) {
   return next();
 }
 
+async function isMemberOfGroup(req, res, next) {
+  let member;
+
+  try {
+    member = await User.findOne({
+      _id: mongoose.Types.ObjectId(req.params.userId),
+      role: 'MEMBER',
+      group: req.group.id,
+      disabled: false,
+    }).exec();
+  } catch (err) {
+    return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  if (!member) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
+
+  req.member = member;
+
+  return next();
+}
+
 module.exports = {
   create,
   confirm,
@@ -173,4 +196,5 @@ module.exports = {
   deleteOneOfGroup,
   isLeader,
   isMember,
+  isMemberOfGroup,
 };

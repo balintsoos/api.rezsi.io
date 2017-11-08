@@ -17,14 +17,24 @@ router.route('/:id')
   .delete(auth.authenticate(), userCtrl.isLeader, groupCtrl.deleteOneOfLeader);
 
 router.route('/:id/users')
-  .get(auth.authenticate(), groupCtrl.isLeaderOfGroup, userCtrl.getAllOfGroup);
+  .get(auth.authenticate(), userCtrl.isLeader, groupCtrl.isLeaderOfGroup, userCtrl.getAllOfGroup);
 
 router.route('/:id/users/:userId')
-  .get(auth.authenticate(), groupCtrl.isLeaderOfGroup, userCtrl.getOneOfGroup)
-  .delete(auth.authenticate(), groupCtrl.isLeaderOfGroup, userCtrl.deleteOneOfGroup);
+  .get(auth.authenticate(), userCtrl.isLeader, groupCtrl.isLeaderOfGroup, userCtrl.getOneOfGroup)
+  .delete(
+    auth.authenticate(),
+    userCtrl.isLeader,
+    groupCtrl.isLeaderOfGroup,
+    userCtrl.deleteOneOfGroup,
+  );
 
 router.route('/:id/users/:userId/reports')
-  .get(auth.authenticate(), reportCtrl.getAllOfUser) // TODO
-  .post(auth.authenticate(), userCtrl.isMember, reportCtrl.create);
+  .get(
+    auth.authenticate(),
+    userCtrl.isLeader,
+    groupCtrl.isLeaderOfGroup,
+    userCtrl.isMemberOfGroup,
+    reportCtrl.getAllOfMember,
+  );
 
 module.exports = router;
