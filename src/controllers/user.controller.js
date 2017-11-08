@@ -6,6 +6,7 @@ const User = require('../models/user.model');
 const mail = require('../config/mail');
 const { apiUrl, clientUrl } = require('../utils/getUrl');
 const confirmEmail = require('../utils/confirmEmail');
+const getEmailDomain = require('../utils/getEmailDomain');
 
 async function getAll(req, res) {
   const { limit = 10, skip = 0 } = req.query;
@@ -70,7 +71,9 @@ async function create(req, res) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
   }
 
-  return res.sendStatus(httpStatus.CREATED);
+  return res.status(httpStatus.CREATED).json({
+    domain: getEmailDomain(user.email),
+  });
 }
 
 async function confirm(req, res) {
