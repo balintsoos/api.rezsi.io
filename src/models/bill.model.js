@@ -23,6 +23,11 @@ const billSchema = new mongoose.Schema({
     required: true,
     ref: 'Summary',
   },
+  user: {
+    type: Types.ObjectId,
+    required: true,
+    ref: 'User',
+  },
 }, {
   timestamps: true,
 });
