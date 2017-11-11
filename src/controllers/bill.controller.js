@@ -8,6 +8,7 @@ async function getAllOfMember(req, res) {
   try {
     bills = await Bill
       .find({ user: req.member.id })
+      .populate('summary')
       .sort({ createdAt: -1 })
       .exec();
   } catch (err) {

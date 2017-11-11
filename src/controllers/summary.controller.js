@@ -1,6 +1,8 @@
 const httpStatus = require('http-status');
 
 const Summary = require('../models/summary.model');
+const Bill = require('../models/bill.model');
+const User = require('../models/user.model');
 
 async function create(req, res) {
   let summary = new Summary(Object.assign({}, req.body, {
@@ -12,6 +14,30 @@ async function create(req, res) {
   } catch (err) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
   }
+
+  let users;
+
+  try {
+    users = await User.find({ group: req.group.id }).exec();
+  } catch (err) {
+    return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  users.forEach(async (user) => {
+    const bill = new Bill({
+      hotWaterConsumption: 0, // TODO
+      coldWaterConsumption: 0,
+      heatConsumption: 0,
+      summary: summary.id,
+      user: user.id,
+    });
+
+    try {
+      await bill.save();
+    } catch (err) {
+      res.status(httpStatus.BAD_REQUEST).json(err);
+    }
+  });
 
   return res.status(httpStatus.CREATED).json(summary.getPayload());
 }
