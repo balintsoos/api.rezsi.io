@@ -38,7 +38,8 @@ billSchema.methods.getPayload = function() {
     hotWaterConsumption: this.hotWaterConsumption,
     coldWaterConsumption: this.coldWaterConsumption,
     heatConsumption: this.heatConsumption,
-    summary: this.summary,
+    createdAt: this.createdAt,
+    summary: this.summary.getPayload(),
   };
 };
 
