@@ -78,7 +78,7 @@ userSchema.methods.getLargePayload = function() {
     email: this.email,
     role: this.role,
     displayName: this.displayName,
-    group: this.group.name,
+    group: this.group.getPayload(),
   };
 };
 
