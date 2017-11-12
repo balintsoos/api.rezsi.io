@@ -16,21 +16,6 @@ async function create(req, res) {
   return res.status(httpStatus.CREATED).json(report.getPayload());
 }
 
-async function getAllOfUser(req, res) {
-  let reports;
-
-  try {
-    reports = await Report
-      .find({ user: req.user.id })
-      .sort({ createdAt: -1 })
-      .exec();
-  } catch (err) {
-    return res.status(httpStatus.BAD_REQUEST).json(err);
-  }
-
-  return res.json(reports.map(report => report.getPayload()));
-}
-
 async function getAllOfMember(req, res) {
   let reports;
 
@@ -48,6 +33,5 @@ async function getAllOfMember(req, res) {
 
 module.exports = {
   create,
-  getAllOfUser,
   getAllOfMember,
 };

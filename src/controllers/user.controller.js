@@ -189,6 +189,31 @@ async function isMemberOfGroup(req, res, next) {
   return next();
 }
 
+async function isLeaderOrMemberOfGroup(req, res, next) {
+  if (req.user.isLeader()) {
+    try {
+      req.member = await User.findOne({
+        _id: mongoose.Types.ObjectId(req.params.userId),
+        role: 'MEMBER',
+        group: req.group.id,
+        disabled: false,
+      }).exec();
+    } catch (err) {
+      return res.status(httpStatus.BAD_REQUEST).json(err);
+    }
+  }
+
+  if (req.user.isMember() && req.user.id.toString() === req.params.userId) {
+    req.member = req.user;
+  }
+
+  if (!req.member) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
+
+  return next();
+}
+
 module.exports = {
   create,
   confirm,
@@ -200,4 +225,5 @@ module.exports = {
   isLeader,
   isMember,
   isMemberOfGroup,
+  isLeaderOrMemberOfGroup,
 };

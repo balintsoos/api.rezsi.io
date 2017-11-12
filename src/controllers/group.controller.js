@@ -132,6 +132,30 @@ async function isLeaderOfGroup(req, res, next) {
   return next();
 }
 
+async function isLeaderOrMemberOfGroup(req, res, next) {
+  if (req.user.isLeader()) {
+    try {
+      req.group = await Group.findOne({
+        _id: mongoose.Types.ObjectId(req.params.id),
+        leader: req.user.id,
+        disabled: false,
+      }).exec();
+    } catch (err) {
+      return res.status(httpStatus.BAD_REQUEST).json(err);
+    }
+  }
+
+  if (req.user.isMember() && req.user.group.id.toString() === req.params.id) {
+    req.group = req.user.group;
+  }
+
+  if (!req.group) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
+
+  return next();
+}
+
 module.exports = {
   create,
   getAllOfLeader,
@@ -139,4 +163,5 @@ module.exports = {
   updateOneOfLeader,
   deleteOneOfLeader,
   isLeaderOfGroup,
+  isLeaderOrMemberOfGroup,
 };

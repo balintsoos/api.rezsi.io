@@ -37,18 +37,21 @@ router.route('/:id/users/:userId')
 router.route('/:id/users/:userId/reports')
   .get(
     auth.authenticate(),
-    userCtrl.isLeader,
-    groupCtrl.isLeaderOfGroup,
-    userCtrl.isMemberOfGroup,
+    groupCtrl.isLeaderOrMemberOfGroup,
+    userCtrl.isLeaderOrMemberOfGroup,
     reportCtrl.getAllOfMember,
+  )
+  .post(
+    auth.authenticate(),
+    userCtrl.isLeader,
+    reportCtrl.create,
   );
 
 router.route('/:id/users/:userId/bills')
   .get(
     auth.authenticate(),
-    userCtrl.isLeader,
-    groupCtrl.isLeaderOfGroup,
-    userCtrl.isMemberOfGroup,
+    groupCtrl.isLeaderOrMemberOfGroup,
+    userCtrl.isLeaderOrMemberOfGroup,
     billCtrl.getAllOfMember,
   );
 
