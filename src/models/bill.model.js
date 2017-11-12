@@ -40,7 +40,31 @@ billSchema.methods.getPayload = function() {
     heatConsumption: this.heatConsumption,
     createdAt: this.createdAt,
     summary: this.summary.getPayload(),
+    total: this.calculateTotal(),
   };
+};
+
+billSchema.methods.calculateTotal = function() {
+  const items = [
+    {
+      quantity: this.heatConsumption,
+      unitPrice: this.summary.heatPrice,
+    },
+    {
+      quantity: this.hotWaterConsumption,
+      unitPrice: this.summary.hotWaterPrice,
+    },
+    {
+      quantity: this.coldWaterConsumption,
+      unitPrice: this.summary.coldWaterPrice,
+    },
+  ];
+
+  const total = items
+    .map(item => item.quantity * item.unitPrice)
+    .reduce((sum, subtotal) => sum + subtotal);
+
+  return total;
 };
 
 module.exports = mongoose.model('Bill', billSchema);
