@@ -43,7 +43,7 @@ router.route('/:id/users/:userId/reports')
   )
   .post(
     auth.authenticate(),
-    userCtrl.isLeader,
+    userCtrl.isMember,
     reportCtrl.create,
   );
 
