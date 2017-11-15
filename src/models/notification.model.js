@@ -20,6 +20,10 @@ const notificationSchema = new mongoose.Schema({
     required: true,
     enum: ['NEW_BILL'],
   },
+  seen: {
+    type: Types.Boolean,
+    default: false,
+  },
 }, {
   timestamps: true,
 });
