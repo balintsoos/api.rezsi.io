@@ -1,11 +1,15 @@
+const http = require('http');
 const util = require('util');
 const mongoose = require('mongoose');
 
 const config = require('./config/main');
 const app = require('./config/app');
+const wss = require('./config/wss');
 
 const debug = require('debug')('API:index');
 const dbDebug = require('debug')('API:db');
+
+const server = http.createServer(app);
 
 mongoose.Promise = global.Promise;
 
@@ -31,7 +35,9 @@ mongoose.connect(mongoUri, {
   keepAlive: true,
 });
 
-app.listen(config.port, () => {
+wss.addServer(server);
+
+server.listen(config.port, () => {
   debug(`Server started on port ${config.port} (${config.env})`);
 });
 
