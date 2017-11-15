@@ -62,16 +62,14 @@ async function create(req, res) {
       };
     }
 
-    const bill = new Bill({
-      hotWaterConsumption: consumptions.hotWater,
-      coldWaterConsumption: consumptions.coldWater,
-      heatConsumption: consumptions.heat,
-      summary: summary.id,
-      user: user.id,
-    });
-
     try {
-      await bill.save();
+      await Bill.create({
+        hotWaterConsumption: consumptions.hotWater,
+        coldWaterConsumption: consumptions.coldWater,
+        heatConsumption: consumptions.heat,
+        summary: summary.id,
+        user: user.id,
+      });
     } catch (err) {
       res.status(httpStatus.BAD_REQUEST).json(err);
     }

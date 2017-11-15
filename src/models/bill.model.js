@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Notification = require('./notification.model');
 
 const { Types } = mongoose.Schema;
 
@@ -30,6 +31,14 @@ const billSchema = new mongoose.Schema({
   },
 }, {
   timestamps: true,
+});
+
+billSchema.post('save', (bill) => {
+  Notification.create({
+    type: 'NEW_BILL',
+    bill: bill.id,
+    user: bill.user,
+  });
 });
 
 billSchema.methods.getPayload = function() {
