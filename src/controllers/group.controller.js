@@ -27,7 +27,8 @@ async function getAllOfLeader(req, res) {
         leader: req.user.id,
         disabled: false,
       })
-      .sort({ createdAt: -1 })
+      .collation({ locale: 'en', strength: 2 })
+      .sort({ name: 1 })
       .exec();
   } catch (err) {
     return res.status(httpStatus.BAD_REQUEST).json(err);

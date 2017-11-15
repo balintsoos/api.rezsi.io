@@ -91,12 +91,16 @@ async function getAllOfGroup(req, res) {
   let users;
 
   try {
-    users = await User.find({
-      role: 'MEMBER',
-      group: req.group.id,
-      confirmed: true,
-      disabled: false,
-    }).sort({ createdAt: -1 }).exec();
+    users = await User
+      .find({
+        role: 'MEMBER',
+        group: req.group.id,
+        confirmed: true,
+        disabled: false,
+      })
+      .collation({ locale: 'en', strength: 2 })
+      .sort({ displayName: 1 })
+      .exec();
   } catch (err) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
   }
