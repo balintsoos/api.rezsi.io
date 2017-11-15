@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const wss = require('../config/wss');
+
 const { Types } = mongoose.Schema;
 
 const notificationSchema = new mongoose.Schema({
@@ -29,5 +31,11 @@ notificationSchema.methods.getPayload = function() {
     createdAt: this.createdAt,
   };
 };
+
+notificationSchema.post('save', (notification) => {
+  const id = notification.user.toString();
+
+  wss.sendToUser(id, notification.getPayload());
+});
 
 module.exports = mongoose.model('Notification', notificationSchema);
