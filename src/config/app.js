@@ -6,6 +6,7 @@ const compress = require('compression');
 const methodOverride = require('method-override');
 const expressWinston = require('express-winston');
 const helmet = require('helmet');
+const pdf = require('express-pdf');
 
 const config = require('./main');
 const cors = require('./cors');
@@ -26,6 +27,7 @@ app.use(compress());
 app.use(methodOverride());
 app.use(helmet());
 app.use(cors());
+app.use(pdf);
 app.use(auth.initialize());
 
 // enable detailed API logging in dev env

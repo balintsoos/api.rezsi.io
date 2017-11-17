@@ -23,10 +23,20 @@ router.route('/:id/summaries')
   .post(auth.authenticate(), userCtrl.isLeader, groupCtrl.isLeaderOfGroup, summaryCtrl.create);
 
 router.route('/:id/users')
-  .get(auth.authenticate(), userCtrl.isLeader, groupCtrl.isLeaderOfGroup, userCtrl.getAllOfGroup);
+  .get(
+    auth.authenticate(),
+    userCtrl.isLeader,
+    groupCtrl.isLeaderOfGroup,
+    userCtrl.getAllOfGroup,
+  );
 
 router.route('/:id/users/:userId')
-  .get(auth.authenticate(), userCtrl.isLeader, groupCtrl.isLeaderOfGroup, userCtrl.getOneOfGroup)
+  .get(
+    auth.authenticate(),
+    userCtrl.isLeader,
+    groupCtrl.isLeaderOfGroup,
+    userCtrl.getOneOfGroup,
+  )
   .delete(
     auth.authenticate(),
     userCtrl.isLeader,
@@ -53,6 +63,14 @@ router.route('/:id/users/:userId/bills')
     groupCtrl.isLeaderOrMemberOfGroup,
     userCtrl.isLeaderOrMemberOfGroup,
     billCtrl.getAllOfMember,
+  );
+
+router.route('/:id/users/:userId/bills/:billId/pdf')
+  .get(
+    auth.authenticate(),
+    groupCtrl.isLeaderOrMemberOfGroup,
+    userCtrl.isLeaderOrMemberOfGroup,
+    billCtrl.getOneAsPdfOfMember,
   );
 
 module.exports = router;
