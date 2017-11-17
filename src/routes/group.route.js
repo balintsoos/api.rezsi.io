@@ -22,6 +22,14 @@ router.route('/:id/summaries')
   .get(auth.authenticate(), userCtrl.isLeader, groupCtrl.isLeaderOfGroup, summaryCtrl.getAllOfGroup)
   .post(auth.authenticate(), userCtrl.isLeader, groupCtrl.isLeaderOfGroup, summaryCtrl.create);
 
+router.route('/:id/summaries/:summaryId/csv')
+  .get(
+    auth.authenticate(),
+    userCtrl.isLeader,
+    groupCtrl.isLeaderOfGroup,
+    summaryCtrl.getOneAsCsvOfGroup,
+  );
+
 router.route('/:id/users')
   .get(
     auth.authenticate(),

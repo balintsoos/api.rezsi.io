@@ -1,4 +1,6 @@
+const mongoose = require('mongoose');
 const httpStatus = require('http-status');
+const json2csv = require('json2csv');
 
 const Summary = require('../models/summary.model');
 const Bill = require('../models/bill.model');
@@ -93,7 +95,37 @@ async function getAllOfGroup(req, res) {
   return res.json(summaries.map(summary => summary.getPayload()));
 }
 
+async function getOneAsCsvOfGroup(req, res) {
+  let bills;
+
+  try {
+    bills = await Bill
+      .find({ summary: mongoose.Types.ObjectId(req.params.summaryId) })
+      .populate('user')
+      .exec();
+  } catch (err) {
+    return res.status(httpStatus.BAD_REQUEST).json(err);
+  }
+
+  let csv;
+  const filename = `${req.params.summaryId}.csv`;
+  const fields = [
+    { label: 'User', value: 'user.displayName' },
+    { label: 'Heat consumption', value: 'heatConsumption' },
+  ];
+
+  try {
+    csv = json2csv({ fields, data: bills, defaultValue: 'NULL' });
+  } catch (err) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
+
+  res.attachment(filename);
+  return res.status(200).send(csv);
+}
+
 module.exports = {
   create,
   getAllOfGroup,
+  getOneAsCsvOfGroup,
 };
