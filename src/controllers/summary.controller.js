@@ -102,6 +102,7 @@ async function getOneAsCsvOfGroup(req, res) {
     bills = await Bill
       .find({ summary: mongoose.Types.ObjectId(req.params.summaryId) })
       .populate('user')
+      .populate('summary')
       .exec();
   } catch (err) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
@@ -111,7 +112,18 @@ async function getOneAsCsvOfGroup(req, res) {
   const filename = `${req.params.summaryId}.csv`;
   const fields = [
     { label: 'User', value: 'user.displayName' },
+    { label: 'Email', value: 'user.email' },
     { label: 'Heat consumption', value: 'heatConsumption' },
+    { label: 'Heat unit price', value: 'summary.heatPrice' },
+    { label: 'Heat price', value: bill => bill.heatConsumption * bill.summary.heatPrice },
+    { label: 'Hot water consumption', value: 'hotWaterConsumption' },
+    { label: 'Hot water unit price', value: 'summary.hotWaterPrice' },
+    { label: 'Hot water price', value: bill => bill.hotWaterConsumption * bill.summary.hotWaterPrice },
+    { label: 'Cold water consumption', value: 'coldWaterConsumption' },
+    { label: 'Cold water unit price', value: 'summary.coldWaterPrice' },
+    { label: 'Cold water price', value: bill => bill.coldWaterConsumption * bill.summary.coldWaterPrice },
+    { label: 'Currency', value: 'summary.currency' },
+    { label: 'Total', value: bill => bill.calculateTotal() },
   ];
 
   try {
