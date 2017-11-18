@@ -65,11 +65,21 @@ class WSS {
       .sort({ createdAt: -1 })
       .exec();
 
-    WSS.sendToSocket(notifications.getPayload())(socket);
+    const payload = notifications.map(n => n.getPayload());
+
+    WSS.sendToSocket(payload)(socket);
   }
 
   static sendToSocket(payload) {
-    return socket => socket.send(JSON.stringify(payload));
+    return socket => socket.send(JSON.stringify(payload), WSS.errorHandler);
+  }
+
+  static errorHandler(error) {
+    if (!error) {
+      return;
+    }
+
+    debug('Error on sending %O', error);
   }
 }
 
