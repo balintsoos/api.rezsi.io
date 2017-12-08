@@ -1,24 +1,28 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcrypt');
+const validateEmail = require('../utils/validateEmail');
 
 const { Types } = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({
   email: {
     type: Types.String,
-    required: true,
+    required: [true, 'MISSING'],
     unique: true,
-    lowercase: true,
     trim: true,
+    validate: {
+      validator: validateEmail,
+      message: 'INVALID',
+    },
   },
   password: {
     type: Types.String,
-    required: true,
+    required: [true, 'MISSING'],
   },
   displayName: {
     type: Types.String,
-    required: true,
+    required: [true, 'MISSING'],
     trim: true,
   },
   role: {
