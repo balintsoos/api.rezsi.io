@@ -5,30 +5,30 @@ const { Types } = mongoose.Schema;
 const summarySchema = new mongoose.Schema({
   from: {
     type: Types.Date,
-    required: true,
+    required: [true, 'MISSING'],
   },
   to: {
     type: Types.Date,
-    required: true,
+    required: [true, 'MISSING'],
   },
   hotWaterPrice: {
     type: Types.Number,
-    required: true,
-    min: 0,
+    required: [true, 'MISSING'],
+    min: [0, 'MINUS'],
   },
   coldWaterPrice: {
     type: Types.Number,
-    required: true,
-    min: 0,
+    required: [true, 'MISSING'],
+    min: [0, 'MINUS'],
   },
   heatPrice: {
     type: Types.Number,
-    required: true,
-    min: 0,
+    required: [true, 'MISSING'],
+    min: [0, 'MINUS'],
   },
   currency: {
     type: Types.String,
-    required: true,
+    required: [true, 'MISSING'],
   },
   group: {
     type: Types.ObjectId,

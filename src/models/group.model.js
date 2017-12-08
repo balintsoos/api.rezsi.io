@@ -5,7 +5,7 @@ const { Types } = mongoose.Schema;
 const groupSchema = new mongoose.Schema({
   name: {
     type: Types.String,
-    required: true,
+    required: [true, 'MISSING'],
     trim: true,
   },
   leader: {

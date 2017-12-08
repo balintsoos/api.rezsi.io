@@ -9,15 +9,18 @@ const reportSchema = new mongoose.Schema({
   },
   hotWater: {
     type: Types.Number,
-    required: true,
+    required: [true, 'MISSING'],
+    min: [0, 'MINUS'],
   },
   coldWater: {
     type: Types.Number,
-    required: true,
+    required: [true, 'MISSING'],
+    min: [0, 'MINUS'],
   },
   heat: {
     type: Types.Number,
-    required: true,
+    required: [true, 'MISSING'],
+    min: [0, 'MINUS'],
   },
 }, {
   timestamps: true,
