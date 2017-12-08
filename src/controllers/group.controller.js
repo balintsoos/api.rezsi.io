@@ -5,9 +5,12 @@ const Group = require('../models/group.model');
 const User = require('../models/user.model');
 
 async function create(req, res) {
-  let group = new Group(Object.assign({}, req.body, {
+  const { name } = req.body;
+
+  let group = new Group({
     leader: req.user.id,
-  }));
+    name,
+  });
 
   try {
     group = await group.save();

@@ -3,9 +3,14 @@ const httpStatus = require('http-status');
 const Report = require('../models/report.model');
 
 async function create(req, res) {
-  let report = new Report(Object.assign({}, req.body, {
+  const { hotWater, coldWater, heat } = req.body;
+
+  let report = new Report({
     user: req.user.id,
-  }));
+    hotWater,
+    coldWater,
+    heat,
+  });
 
   try {
     report = await report.save();

@@ -17,6 +17,7 @@ async function generateToken(req, res) {
       .findOne({
         email: req.body.email,
         disabled: false,
+        confirmed: true,
       })
       .populate('group')
       .exec();
@@ -27,11 +28,6 @@ async function generateToken(req, res) {
 
   if (!user) {
     debug('CANNOT_FIND_USER');
-    return res.sendStatus(httpStatus.BAD_REQUEST);
-  }
-
-  if (!user.confirmed) {
-    debug('USER_NOT_CONFIRMED');
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 
