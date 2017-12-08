@@ -63,10 +63,6 @@ async function getOneOfLeader(req, res) {
 async function updateOneOfLeader(req, res) {
   const { name } = req.body;
 
-  if (!name) {
-    return res.sendStatus(httpStatus.BAD_REQUEST);
-  }
-
   let updatedGroup;
 
   try {
@@ -75,7 +71,7 @@ async function updateOneOfLeader(req, res) {
         _id: mongoose.Types.ObjectId(req.params.id),
         leader: req.user.id,
         disabled: false,
-      }, { name }, { new: true })
+      }, { name }, { new: true, runValidators: true })
       .exec();
   } catch (err) {
     return res.status(httpStatus.BAD_REQUEST).json(err);

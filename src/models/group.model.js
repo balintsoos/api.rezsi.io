@@ -2,11 +2,17 @@ const mongoose = require('mongoose');
 
 const { Types } = mongoose.Schema;
 
+const validateName = name => name && name.trim() !== '';
+
 const groupSchema = new mongoose.Schema({
   name: {
     type: Types.String,
     required: [true, 'MISSING'],
     trim: true,
+    validate: {
+      validator: validateName,
+      message: 'EMPTY',
+    },
   },
   leader: {
     type: Types.ObjectId,

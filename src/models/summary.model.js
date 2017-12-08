@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const { Types } = mongoose.Schema;
 
+const validateCurrency = currency => currency && currency.trim() !== '';
+const validateTo = function(to) {
+  return this.from < to;
+};
+
 const summarySchema = new mongoose.Schema({
   from: {
     type: Types.Date,
@@ -10,6 +15,10 @@ const summarySchema = new mongoose.Schema({
   to: {
     type: Types.Date,
     required: [true, 'MISSING'],
+    validate: {
+      validator: validateTo,
+      message: 'EARLIER',
+    },
   },
   hotWaterPrice: {
     type: Types.Number,
@@ -29,6 +38,11 @@ const summarySchema = new mongoose.Schema({
   currency: {
     type: Types.String,
     required: [true, 'MISSING'],
+    trim: true,
+    validate: {
+      validator: validateCurrency,
+      message: 'EMPTY',
+    },
   },
   group: {
     type: Types.ObjectId,
