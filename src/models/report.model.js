@@ -26,6 +26,40 @@ const reportSchema = new mongoose.Schema({
   timestamps: true,
 });
 
+reportSchema.post('validate', async (report, next) => {
+  const errors = {};
+
+  // eslint-disable-next-line no-use-before-define
+  const lastReport = await Report
+    .findOne({ user: report.user })
+    .sort({ createdAt: -1 })
+    .exec();
+
+  if (!lastReport) {
+    return next();
+  }
+
+  if (lastReport.hotWater > report.hotWater) {
+    errors.hotWater = { message: 'LESS' };
+  }
+
+  if (lastReport.coldWater > report.coldWater) {
+    errors.coldWater = { message: 'LESS' };
+  }
+
+  if (lastReport.heat > report.heat) {
+    errors.heat = { message: 'LESS' };
+  }
+
+  if (Object.keys(errors).length !== 0) {
+    const error = new Error();
+    error.errors = errors;
+    return next(error);
+  }
+
+  return next();
+});
+
 reportSchema.methods.getPayload = function() {
   return {
     id: this.id,
@@ -36,4 +70,6 @@ reportSchema.methods.getPayload = function() {
   };
 };
 
-module.exports = mongoose.model('Report', reportSchema);
+const Report = mongoose.model('Report', reportSchema);
+
+module.exports = Report;
