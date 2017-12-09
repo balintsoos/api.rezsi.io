@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-userSchema.plugin(uniqueValidator);
+userSchema.plugin(uniqueValidator, { message: 'EXIST' });
 
 userSchema.pre('save', function(next) {
   if (!this.isModified('password') && !this.isNew) {
