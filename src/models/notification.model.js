@@ -1,4 +1,10 @@
 const mongoose = require('mongoose');
+const debug = require('debug')('API:notification.model');
+
+const User = require('../models/user.model');
+const mail = require('../config/mail');
+const newBillEmail = require('../utils/newBillEmail');
+const { clientUrl } = require('../utils/getUrl');
 
 const { Types } = mongoose.Schema;
 
@@ -34,10 +40,30 @@ notificationSchema.methods.getPayload = function() {
   };
 };
 
-notificationSchema.post('save', (notification) => {
+notificationSchema.post('save', async (notification) => {
   const id = notification.user.toString();
 
   wss.sendToUser(id, notification.getPayload()); // eslint-disable-line no-use-before-define
+
+  const user = await User.findById(id).exec();
+
+  if (!user) {
+    debug('USER_NOT_FOUND');
+    return;
+  }
+
+  try {
+    await mail.send({
+      to: user.email,
+      subject: 'New bill',
+      html: newBillEmail({
+        name: user.displayName,
+        url: clientUrl('/user?tab=bills'),
+      }),
+    });
+  } catch (err) {
+    debug('EMAIL_SEND_FAILED %O', err);
+  }
 });
 
 module.exports = mongoose.model('Notification', notificationSchema);
