@@ -11,8 +11,8 @@ class WSS {
   }
 
   addServer(server) {
-    const wss = new WebSocket.Server({ server });
-    wss.on('connection', this.addConnection.bind(this));
+    this.server = new WebSocket.Server({ server });
+    this.server.on('connection', this.addConnection.bind(this));
   }
 
   addConnection(socket, req) {
@@ -20,8 +20,6 @@ class WSS {
     const { id } = location.query;
 
     debug('WebSocket connection: %s', id);
-
-    socket.on('message', WSS.receiveMessage(id));
 
     this.addSocket(id, socket);
     WSS.sendNotSeenNotifications(id, socket);
@@ -32,7 +30,17 @@ class WSS {
       this.sockets[id] = [];
     }
 
+    socket.on('message', WSS.onMessage(id));
+
     this.sockets[id].push(socket);
+  }
+
+  removeClosedSockets(id) {
+    if (!this.sockets[id]) {
+      return;
+    }
+
+    this.sockets[id] = this.sockets[id].filter(WSS.isOpen);
   }
 
   sendToUser(id, payload) {
@@ -40,11 +48,13 @@ class WSS {
       return;
     }
 
+    this.removeClosedSockets(id);
+
     const send = WSS.sendToSocket(payload);
     this.sockets[id].forEach(send);
   }
 
-  static receiveMessage(id) {
+  static onMessage(id) {
     return async (msg) => {
       debug('WebSocket message: %O', msg);
 
@@ -80,6 +90,10 @@ class WSS {
     }
 
     debug('Error on sending %O', error);
+  }
+
+  static isOpen(socket) {
+    return socket && socket.readyState === WebSocket.OPEN;
   }
 }
 
