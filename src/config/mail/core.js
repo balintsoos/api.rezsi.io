@@ -1,9 +1,6 @@
-const nodemailer = require('nodemailer');
-const debug = require('debug')('API:mail');
-
-const config = require('./main');
-
-const transport = nodemailer.createTransport({
+const makeTransport = ({
+  nodemailer, config,
+}) => nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: config.gmail.user,
@@ -11,9 +8,11 @@ const transport = nodemailer.createTransport({
   },
 });
 
-function send({
+const makeSend = ({
+  transport, config, debug,
+}) => ({
   to, subject, text, html,
-}) {
+}) => {
   const options = {
     from: config.gmail.address,
     bcc: config.gmail.address,
@@ -36,8 +35,9 @@ function send({
       return resolve(info);
     });
   });
-}
+};
 
 module.exports = {
-  send,
+  makeTransport,
+  makeSend,
 };
