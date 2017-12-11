@@ -23,7 +23,12 @@ async function create(req, res) {
   let users;
 
   try {
-    users = await User.find({ group: req.group.id }).exec();
+    users = await User.find({
+      role: 'MEMBER',
+      group: req.group.id,
+      confirmed: true,
+      disabled: false,
+    }).exec();
   } catch (err) {
     return res.status(httpStatus.BAD_REQUEST).json(err);
   }
