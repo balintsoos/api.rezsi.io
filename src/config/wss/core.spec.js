@@ -23,7 +23,10 @@ class Server {
 
 const WebSocket = {
   Server,
+  CONNECTING: 'CONNECTING',
   OPEN: 'OPEN',
+  CLOSING: 'CLOSING',
+  CLOSED: 'CLOSED',
 };
 
 describe('WebSocket Service', () => {
@@ -37,6 +40,7 @@ describe('WebSocket Service', () => {
     socket = {
       on: sinon.spy(),
       send: sinon.spy(),
+      readyState: WebSocket.OPEN,
     };
 
     WSS = makeWSS({
@@ -117,14 +121,51 @@ describe('WebSocket Service', () => {
     });
 
     describe('sendToSocket', () => {
-      it('should call socket.send', () => {
-        WSS.makeSendToSocket({})(socket);
-        expect(socket.send.called).to.be.true;
+      describe('if socket is open', () => {
+        it('should call socket.send', () => {
+          WSS.makeSendToSocket({})(socket);
+          expect(socket.send.called).to.be.true;
+        });
+
+        it('should call socket.send with stringified payload', () => {
+          WSS.makeSendToSocket({ a: 'a' })(socket);
+          expect(socket.send.getCall(0).args[0]).to.equal('{"a":"a"}');
+        });
       });
 
-      it('should call socket.send with stringified payload', () => {
-        WSS.makeSendToSocket({ a: 'a' })(socket);
-        expect(socket.send.getCall(0).args[0]).to.equal('{"a":"a"}');
+      describe('if socket is not open', () => {
+        it('should not call socket.send', () => {
+          socket.readyState = WebSocket.CONNECTING;
+          WSS.makeSendToSocket({})(socket);
+          expect(socket.send.notCalled).to.be.true;
+        });
+      });
+    });
+  });
+
+  describe('removeClosedSockets', () => {
+    describe('if socket array of user is empty', () => {
+      it('should return', () => {
+        wss.removeClosedSockets('id');
+        expect(wss.sockets.id).to.be.undefined;
+      });
+    });
+
+    describe('if socket array of user is not empty', () => {
+      beforeEach(() => {
+        wss.addSocket('id', { readyState: WebSocket.CONNECTING, on: p => p });
+        wss.addSocket('id', { readyState: WebSocket.OPEN, on: p => p });
+        wss.addSocket('id', { readyState: WebSocket.CLOSING, on: p => p });
+        wss.addSocket('id', { readyState: WebSocket.CLOSED, on: p => p });
+      });
+
+      it('should remove the closed sockets', () => {
+        wss.removeClosedSockets('id');
+
+        expect(wss.sockets.id).to.have.lengthOf(3);
+        expect(wss.sockets.id[0].readyState).to.equal(WebSocket.CONNECTING);
+        expect(wss.sockets.id[1].readyState).to.equal(WebSocket.OPEN);
+        expect(wss.sockets.id[2].readyState).to.equal(WebSocket.CLOSING);
       });
     });
   });

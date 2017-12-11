@@ -40,7 +40,7 @@ const makeWSS = ({
         return;
       }
 
-      this.sockets[id] = this.sockets[id].filter(WSS.isOpen);
+      this.sockets[id] = this.sockets[id].filter(WSS.isNotClosed);
     }
 
     sendToUser(id, payload) {
@@ -81,7 +81,7 @@ const makeWSS = ({
     }
 
     static makeSendToSocket(payload) {
-      return socket => socket.send(JSON.stringify(payload), WSS.errorHandler);
+      return socket => WSS.isOpen(socket) && socket.send(JSON.stringify(payload), WSS.errorHandler);
     }
 
     static errorHandler(error) {
@@ -94,6 +94,10 @@ const makeWSS = ({
 
     static isOpen(socket) {
       return !!socket && socket.readyState === WebSocket.OPEN;
+    }
+
+    static isNotClosed(socket) {
+      return !!socket && socket.readyState !== WebSocket.CLOSED;
     }
   }
 
