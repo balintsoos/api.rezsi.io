@@ -62,7 +62,7 @@ const makeWSS = ({
           .update({
             user: mongoose.Types.ObjectId(id),
             seen: false,
-          }, { seen: true }).exec();
+          }, { seen: true }, { multi: true }).exec();
       };
     }
 
