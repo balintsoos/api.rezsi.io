@@ -19,7 +19,7 @@ const config = {
   },
 };
 
-describe('Mail service', () => {
+describe('Mail Service', () => {
   let transport;
   let send;
   let debug;
