@@ -28,7 +28,6 @@
     "dotenv": "4.0.0",
     "express": "4.15.4",
     "express-pdf": "1.2.2",
-    "express-winston": "2.4.0",
     "helmet": "3.8.1",
     "http-status": "1.4.2",
     "joi": "14.3.1",
