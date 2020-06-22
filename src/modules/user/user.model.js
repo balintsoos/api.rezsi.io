@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcrypt');
-const validateEmail = require('../utils/validateEmail');
+const validateEmail = require('../../utils/validateEmail');
 
 const { Types } = mongoose.Schema;
 

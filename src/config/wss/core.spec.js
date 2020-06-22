@@ -6,7 +6,7 @@ const url = require('url');
 const makeWSS = require('./core');
 
 const mongoose = require('mongoose');
-const Notification = require('../../models/notification.model');
+const Notification = require('../../modules/notification/notification.model');
 
 class Server {
   constructor({ server }) {

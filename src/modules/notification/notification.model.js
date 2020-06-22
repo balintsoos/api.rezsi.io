@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const debug = require('debug')('API:notification.model');
 
-const User = require('../models/user.model');
-const mail = require('../config/mail');
-const newBillEmail = require('../utils/newBillEmail');
-const { clientUrl } = require('../utils/getUrl');
+const User = require('../user/user.model');
+const mail = require('../../config/mail');
+const newBillEmail = require('../../utils/newBillEmail');
+const { clientUrl } = require('../../utils/getUrl');
 
 const { Types } = mongoose.Schema;
 
@@ -70,4 +70,4 @@ module.exports = mongoose.model('Notification', notificationSchema);
 
 // Fix circular dependency issue
 // https://medium.com/@robonyong/dealing-with-circular-dependencies-mongoose-in-node-js-36f3b24eb015
-const wss = require('../config/wss');
+const wss = require('../../config/wss');

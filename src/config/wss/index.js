@@ -3,7 +3,7 @@ const WebSocket = require('ws');
 const mongoose = require('mongoose');
 
 const debug = require('debug')('API:wss');
-const Notification = require('../../models/notification.model');
+const Notification = require('../../modules/notification/notification.model');
 
 const makeWSS = require('./core');
 

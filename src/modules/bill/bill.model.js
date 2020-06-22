@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Notification = require('./notification.model');
+const Notification = require('../notification/notification.model');
 
 const { Types } = mongoose.Schema;
 

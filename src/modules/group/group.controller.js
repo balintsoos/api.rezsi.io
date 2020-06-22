@@ -1,8 +1,8 @@
 const httpStatus = require('http-status');
 const mongoose = require('mongoose');
 
-const Group = require('../../models/group.model');
-const User = require('../../models/user.model');
+const Group = require('./group.model');
+const User = require('../../modules/user/user.model');
 
 async function create(req, res) {
   const { name } = req.body;

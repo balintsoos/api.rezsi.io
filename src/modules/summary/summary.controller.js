@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const httpStatus = require('http-status');
 const json2csv = require('json2csv');
 
-const Summary = require('../../models/summary.model');
-const Bill = require('../../models/bill.model');
-const User = require('../../models/user.model');
-const Report = require('../../models/report.model');
+const Summary = require('./summary.model');
+const Bill = require('../bill/bill.model');
+const User = require('../../modules/user/user.model');
+const Report = require('../report/report.model');
 
 const consumption = (current, last, key) => current[key] - last[key];
 
