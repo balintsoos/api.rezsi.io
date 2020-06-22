@@ -23,11 +23,9 @@ db.on('error', () => debug(`Unable to connect to database: ${mongoUri}`));
 db.on('reconnected', () => debug(`Reconnected to database: ${mongoUri}`));
 db.on('disconnected', () => debug(`Disconnected from database: ${mongoUri}`));
 
-if (config.mongooseDebug) {
-  mongoose.set('debug', (collectionName, method, query, doc) => {
-    dbDebug(`${collectionName}.${method}`, util.inspect(query, false, 20), doc);
-  });
-}
+mongoose.set('debug', (collectionName, method, query, doc) => {
+  dbDebug(`${collectionName}.${method}`, util.inspect(query, false, 20), doc);
+});
 
 mongoose.connect(mongoUri, {
   promiseLibrary: global.Promise,

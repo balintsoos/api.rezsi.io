@@ -8,12 +8,6 @@ const envVarsSchema = Joi.object({
     .default('development'),
   PORT: Joi.number()
     .default(4040),
-  MONGOOSE_DEBUG: Joi.boolean()
-    .when('NODE_ENV', {
-      is: Joi.string().equal('development'),
-      then: Joi.boolean().default(true),
-      otherwise: Joi.boolean().default(false),
-    }),
   JWT_SECRET: Joi.string()
     .required(),
   MONGO_HOST: Joi.string()
@@ -53,7 +47,6 @@ const serverUrl = envVars.NODE_ENV === 'development'
 module.exports = {
   env: envVars.NODE_ENV,
   port: envVars.PORT,
-  mongooseDebug: envVars.MONGOOSE_DEBUG,
   jwtSecret: envVars.JWT_SECRET,
   mongo: {
     host: envVars.MONGO_HOST,
