@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 
-const Report = require('../models/report.model');
+const Report = require('../../models/report.model');
 
 async function create(req, res) {
   const { hotWater, coldWater, heat } = req.body;
