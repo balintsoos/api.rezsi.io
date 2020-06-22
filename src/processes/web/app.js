@@ -8,11 +8,11 @@ const expressWinston = require('express-winston');
 const helmet = require('helmet');
 const pdf = require('express-pdf');
 
-const config = require('./main');
-const cors = require('./cors');
-const auth = require('./auth');
-const winstonInstance = require('./winston');
-const routes = require('../routes/index.route');
+const config = require('../../config/config');
+const cors = require('../../config/cors');
+const auth = require('../../config/auth');
+const winstonInstance = require('../../config/winston');
+const router = require('./routers/main.router');
 
 const app = express();
 
@@ -43,6 +43,6 @@ if (config.env === 'development') {
   }));
 }
 
-app.use('/api/v1', routes);
+app.use('/api/v1', router);
 
 module.exports = app;

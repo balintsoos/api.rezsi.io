@@ -1,4 +1,4 @@
-const config = require('../config/main');
+const config = require('../config/config');
 
 const apiUrl = endpoint => `${config.server.origin}/api/v1${endpoint}`;
 

@@ -30,7 +30,7 @@
     "express-pdf": "1.2.2",
     "express-winston": "2.4.0",
     "helmet": "3.8.1",
-    "http-status": "1.0.1",
+    "http-status": "1.4.2",
     "joi": "14.3.1",
     "json2csv": "3.11.5",
     "jsonwebtoken": "8.0.1",

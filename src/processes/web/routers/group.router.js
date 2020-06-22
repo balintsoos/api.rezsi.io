@@ -1,11 +1,11 @@
 const express = require('express');
 
-const auth = require('../config/auth');
-const groupCtrl = require('../controllers/group.controller');
-const userCtrl = require('../controllers/user.controller');
-const summaryCtrl = require('../controllers/summary.controller');
-const reportCtrl = require('../controllers/report.controller');
-const billCtrl = require('../controllers/bill.controller');
+const auth = require('../../../config/auth');
+const groupCtrl = require('../../../controllers/group.controller');
+const userCtrl = require('../../../controllers/user.controller');
+const summaryCtrl = require('../../../controllers/summary.controller');
+const reportCtrl = require('../../../controllers/report.controller');
+const billCtrl = require('../../../controllers/bill.controller');
 
 const router = express.Router();
 

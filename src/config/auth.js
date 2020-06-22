@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 const debug = require('debug')('API:auth');
 
-const config = require('./main');
+const config = require('./config');
 const User = require('../models/user.model');
 
 /* passport-jwt options

@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const debug = require('debug')('API:mail');
 
-const config = require('../main');
+const config = require('../config');
 
 const {
   makeTransport,

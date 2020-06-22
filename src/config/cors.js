@@ -1,5 +1,5 @@
 const cors = require('cors');
-const config = require('./main');
+const config = require('./config');
 
 module.exports = () => cors({
   origin: config.client.origin,
