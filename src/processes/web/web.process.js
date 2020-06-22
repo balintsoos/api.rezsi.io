@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const config = require('../../config/config');
 const app = require('./app');
-const wss = require('../../config/wss');
+const wss = require('../../modules/wss');
 
 const debug = require('debug')('API:index');
 const dbDebug = require('debug')('API:db');

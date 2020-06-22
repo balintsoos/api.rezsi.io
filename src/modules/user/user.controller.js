@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const debug = require('debug')('API:user.controller');
 
 const User = require('../../modules/user/user.model');
-const mail = require('../../config/mail');
+const mail = require('../../modules/mail');
 const { apiUrl, clientUrl } = require('../../utils/getUrl');
 const confirmEmail = require('../../utils/confirmEmail');
 const getEmailDomain = require('../../utils/getEmailDomain');
