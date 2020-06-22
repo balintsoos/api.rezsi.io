@@ -38,5 +38,3 @@ wss.addServer(server);
 server.listen(config.port, () => {
   debug(`Server started on port ${config.port} (${config.env})`);
 });
-
-module.exports = app;
