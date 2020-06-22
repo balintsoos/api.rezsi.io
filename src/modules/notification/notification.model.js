@@ -3,8 +3,8 @@ const debug = require('debug')('API:notification.model');
 
 const User = require('../user/user.model');
 const mail = require('../../modules/mail');
-const newBillEmail = require('../../utils/newBillEmail');
-const { clientUrl } = require('../../utils/getUrl');
+const newBillEmail = require('./newBillEmail');
+const { clientUrl } = require('../../lib/getUrl');
 
 const { Types } = mongoose.Schema;
 

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const httpStatus = require('http-status');
 
 const Bill = require('./bill.model');
-const billPdf = require('../../utils/billPdf');
+const billPdf = require('./billPdf');
 
 async function getAllOfMember(req, res) {
   let bills;
