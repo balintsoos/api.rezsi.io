@@ -31,7 +31,7 @@
     "helmet": "3.23.1",
     "http-status": "1.4.2",
     "joi": "14.3.1",
-    "json2csv": "3.11.5",
+    "json2csv": "5.0.1",
     "jsonwebtoken": "8.0.1",
     "method-override": "3.0.0",
     "mongoose": "5.9.19",
