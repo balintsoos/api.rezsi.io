@@ -2,7 +2,7 @@ const http = require('http');
 const util = require('util');
 const mongoose = require('mongoose');
 
-const config = require('../../config/config');
+const config = require('../../config');
 const app = require('./app');
 const wss = require('../../modules/wss');
 
