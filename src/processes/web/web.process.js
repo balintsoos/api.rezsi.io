@@ -2,9 +2,9 @@ const http = require('http');
 const util = require('util');
 const mongoose = require('mongoose');
 
-const config = require('./config/main');
-const app = require('./config/app');
-const wss = require('./config/wss');
+const config = require('../../config/main');
+const app = require('../../config/app');
+const wss = require('../../config/wss');
 
 const debug = require('debug')('API:index');
 const dbDebug = require('debug')('API:db');

@@ -1,7 +1,7 @@
 {
   "name": "api.rezsi.io",
   "version": "1.0.2",
-  "main": "src/index.js",
+  "main": "src/processes/web/web.process.js",
   "repository": "https://github.com/balintsoos/api.rezsi.io.git",
   "bugs": "https://github.com/balintsoos/api.rezsi.io/issues",
   "author": "Balint Soos <soosbalint95@gmail.com> (https://github.com/balintsoos)",
@@ -11,7 +11,7 @@
     "node": "14.4.0"
   },
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node src/processes/web/web.process.js",
     "lint": "eslint .",
     "unit": "mocha src/**/*.spec.js",
     "pretest": "npm run lint",
@@ -24,7 +24,7 @@
     "cookie-parser": "1.4.3",
     "cors": "2.8.4",
     "date-fns": "1.29.0",
-    "debug": "3.1.0",
+    "debug": "4.1.1",
     "dotenv": "4.0.0",
     "express": "4.15.4",
     "express-pdf": "1.2.2",
