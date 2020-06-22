@@ -11,8 +11,6 @@ const dbDebug = require('debug')('API:db');
 
 const server = http.createServer(app);
 
-mongoose.Promise = global.Promise;
-
 const db = mongoose.connection;
 const mongoUri = config.mongo.host;
 
@@ -28,7 +26,6 @@ mongoose.set('debug', (collectionName, method, query, doc) => {
 });
 
 mongoose.connect(mongoUri, {
-  promiseLibrary: global.Promise,
   useNewUrlParser: true,
 });
 
