@@ -1,6 +1,6 @@
 const express = require('express');
 
-const auth = require('../../../config/auth');
+const auth = require('../../../modules/auth/auth');
 const groupCtrl = require('../../../modules/group/group.controller');
 const userCtrl = require('../../../modules/user/user.controller');
 const summaryCtrl = require('../../../modules/summary/summary.controller');

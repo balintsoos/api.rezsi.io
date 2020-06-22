@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const debug = require('debug')('API:auth.controller');
 
-const auth = require('../../config/auth');
+const auth = require('./auth');
 const User = require('../../modules/user/user.model');
 
 async function generateToken(req, res) {

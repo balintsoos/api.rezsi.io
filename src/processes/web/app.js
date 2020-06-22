@@ -7,8 +7,8 @@ const methodOverride = require('method-override');
 const helmet = require('helmet');
 const pdf = require('express-pdf');
 
-const cors = require('../../config/cors');
-const auth = require('../../config/auth');
+const cors = require('./middlewares/cors');
+const auth = require('../../modules/auth/auth');
 const router = require('./routers/main.router');
 
 const app = express();

@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('../../../config/cors');
+const cors = require('../middlewares/cors');
 const healthRouter = require('./health.router');
 const authRouter = require('./auth.router');
 const userRouter = require('./user.router');
