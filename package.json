@@ -25,7 +25,7 @@
     "cors": "2.8.4",
     "date-fns": "1.29.0",
     "debug": "4.1.1",
-    "dotenv": "4.0.0",
+    "dotenv": "8.2.0",
     "express": "4.15.4",
     "express-pdf": "1.2.2",
     "helmet": "3.8.1",
