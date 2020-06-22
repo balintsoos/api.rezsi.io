@@ -5,11 +5,10 @@
 
 ## Getting started
 
-Install [yarn](https://yarnpkg.com/en/docs/install)
-
 Install dependencies:
 ```sh
-$ yarn
+$ nvm install
+$ npm install
 ```
 
 Set environment variables:
@@ -19,5 +18,5 @@ $ cp .env.example .env
 
 Start server:
 ```sh
-$ yarn start
+$ npm start
 ```
