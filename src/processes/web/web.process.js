@@ -29,8 +29,7 @@ mongoose.set('debug', (collectionName, method, query, doc) => {
 
 mongoose.connect(mongoUri, {
   promiseLibrary: global.Promise,
-  useMongoClient: true,
-  keepAlive: true,
+  useNewUrlParser: true,
 });
 
 wss.addServer(server);
