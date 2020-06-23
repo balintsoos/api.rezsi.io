@@ -42,7 +42,11 @@ async function getOneAsPdfOfMember(req, res) {
   const filename = `${bill.id.toString()}.pdf`;
   const htmlContent = billPdf(bill.getPayload());
 
-  return res.pdfFromHTML({ filename, htmlContent });
+  res.set({
+    'Content-Type': 'application/pdf',
+    'Content-Disposition': `inline; filename="${filename}"`,
+  });
+  return res.send(htmlContent);
 }
 
 module.exports = {

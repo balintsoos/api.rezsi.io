@@ -5,7 +5,6 @@ const cookieParser = require('cookie-parser');
 const compress = require('compression');
 const methodOverride = require('method-override');
 const helmet = require('helmet');
-const pdf = require('express-pdf');
 
 const cors = require('./middlewares/cors');
 const auth = require('../../modules/auth/auth');
@@ -21,9 +20,7 @@ app.use(compress());
 app.use(methodOverride());
 app.use(helmet());
 app.use(cors());
-app.use(pdf);
 app.use(auth.initialize());
-
 app.use('/api/v1', router);
 
 module.exports = app;
