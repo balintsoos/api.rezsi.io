@@ -66,5 +66,5 @@ typings/
 # dotenv environment variables file
 .env
 
-# MongoDB
-data
+# Local MongoDB files
+db

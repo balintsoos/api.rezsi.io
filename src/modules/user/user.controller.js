@@ -4,7 +4,7 @@ const debug = require('debug')('API:user.controller');
 
 const User = require('../../modules/user/user.model');
 const mail = require('../../modules/mail');
-const { apiUrl, clientUrl } = require('../../lib/getUrl');
+const clientUrl = require('../../lib/clientUrl');
 const confirmEmail = require('./confirmEmail');
 const getEmailDomain = require('./getEmailDomain');
 
@@ -63,7 +63,7 @@ async function create(req, res) {
       subject: 'Confirm your email address',
       html: confirmEmail({
         name: user.displayName,
-        url: apiUrl(`/users/${user.id}/confirm`),
+        url: clientUrl(`/confirm?user=${user.id}`),
       }),
     });
   } catch (err) {
@@ -83,8 +83,7 @@ async function confirm(req, res) {
     debug('USER_CONFIRM_FAILED %O', err);
     return res.status(httpStatus.BAD_REQUEST).json(err);
   }
-
-  return res.redirect(clientUrl('/login'));
+  return res.sendStatus(httpStatus.OK);
 }
 
 async function getAllOfGroup(req, res) {

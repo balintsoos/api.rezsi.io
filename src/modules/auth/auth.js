@@ -13,7 +13,7 @@ const User = require('../user/user.model');
  */
 const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: config.jwtSecret,
+  secretOrKey: config.jwt.secret,
 };
 
 passport.use(new Strategy(options, async (payload, done) => {
@@ -44,5 +44,5 @@ passport.use(new Strategy(options, async (payload, done) => {
 module.exports = {
   initialize: () => passport.initialize(),
   authenticate: () => passport.authenticate('jwt', { session: false }),
-  createToken: payload => jwt.sign(payload, config.jwtSecret, { expiresIn: '24h' }),
+  createToken: payload => jwt.sign(payload, config.jwt.secret, { expiresIn: '24h' }),
 };

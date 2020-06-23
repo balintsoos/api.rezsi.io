@@ -4,7 +4,7 @@ const debug = require('debug')('API:notification.model');
 const User = require('../user/user.model');
 const mail = require('../../modules/mail');
 const newBillEmail = require('./newBillEmail');
-const { clientUrl } = require('../../lib/getUrl');
+const clientUrl = require('../../lib/clientUrl');
 
 const { Types } = mongoose.Schema;
 
