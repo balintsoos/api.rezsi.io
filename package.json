@@ -11,7 +11,7 @@
     "node": "14.4.0"
   },
   "scripts": {
-    "start": "node src/processes/web/web.process.js",
+    "start": "node -r dotenv/config src/processes/web/web.process.js",
     "lint": "eslint .",
     "unit": "mocha src/**/*.spec.js",
     "pretest": "npm run lint",

@@ -1,4 +1,3 @@
-require('dotenv').config();
 const Joi = require('@hapi/joi');
 
 const envSchema = Joi.object({
