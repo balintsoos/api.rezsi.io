@@ -1,28 +1,29 @@
-const http = require('http');
-const util = require('util');
-const mongoose = require('mongoose');
+import http from 'http';
+import util from 'util';
+import mongoose from 'mongoose';
+import debug from 'debug';
 
-const config = require('../../config');
-const app = require('./app');
+import { config } from '../../config';
+import { app } from './app';
 const wss = require('../../modules/wss');
 
-const debug = require('debug')('API:index');
-const dbDebug = require('debug')('API:db');
+const log = debug('API:index')
+const dbLog = debug('API:db');
 
 const server = http.createServer(app);
 
 const db = mongoose.connection;
 const mongoUrl = config.mongo.url;
 
-db.on('connecting', () => debug(`Connecting to database: ${mongoUrl}`));
-db.on('connected', () => debug(`Connected to database: ${mongoUrl}`));
-db.once('open', () => debug(`Connection is open to database: ${mongoUrl}`));
-db.on('error', () => debug(`Unable to connect to database: ${mongoUrl}`));
-db.on('reconnected', () => debug(`Reconnected to database: ${mongoUrl}`));
-db.on('disconnected', () => debug(`Disconnected from database: ${mongoUrl}`));
+db.on('connecting', () => log(`Connecting to database: ${mongoUrl}`));
+db.on('connected', () => log(`Connected to database: ${mongoUrl}`));
+db.once('open', () => log(`Connection is open to database: ${mongoUrl}`));
+db.on('error', () => log(`Unable to connect to database: ${mongoUrl}`));
+db.on('reconnected', () => log(`Reconnected to database: ${mongoUrl}`));
+db.on('disconnected', () => log(`Disconnected from database: ${mongoUrl}`));
 
-mongoose.set('debug', (collectionName, method, query, doc) => {
-  dbDebug(`${collectionName}.${method}`, util.inspect(query, false, 20), doc);
+mongoose.set('debug', (collectionName: any, method: any, query: any, doc: any) => {
+  dbLog(`${collectionName}.${method}`, util.inspect(query, false, 20), doc);
 });
 
 mongoose.connect(mongoUrl, {
