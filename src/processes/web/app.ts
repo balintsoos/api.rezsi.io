@@ -1,26 +1,24 @@
-const express = require("express");
-const morgan = require("morgan");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const compress = require("compression");
-const methodOverride = require("method-override");
-const helmet = require("helmet");
+import express from 'express';
+import morgan from 'morgan';
+import helmet from 'helmet';
+import cors from 'cors';
+import compress from 'compression';
 
-const cors = require("./middlewares/cors");
-const auth = require("../../modules/auth/auth");
-const router = require("./routers/main.router");
+import { config } from '../../config';
+const auth = require('../../modules/auth/auth');
+const router = require('./routers/main.router');
 
-const app = express();
+const corsConfig = {
+  origin: config.client.origin,
+  credentials: true,
+  exposedHeaders: ['Content-Disposition'],
+};
+
+export const app = express();
 
 app.use(morgan("dev"));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(compress());
-app.use(methodOverride());
 app.use(helmet());
-app.use(cors());
+app.use(cors(corsConfig));
+app.use(compress());
 app.use(auth.initialize());
 app.use("/api/v1", router);
-
-module.exports = app;
