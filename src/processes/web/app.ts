@@ -1,7 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
-import compress from 'compression';
+import compression from 'compression';
 import cors from 'cors';
 import { corsConfig } from './cors-config';
 const auth = require('../../modules/auth/auth');
@@ -11,7 +11,7 @@ export const app = express();
 
 app.use(morgan("dev"));
 app.use(helmet());
-app.use(compress());
+app.use(compression());
 app.use(cors(corsConfig));
 app.use(auth.initialize());
 app.use("/api/v1", router);
