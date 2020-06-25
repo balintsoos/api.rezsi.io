@@ -1,7 +1,7 @@
 {
   "name": "api.rezsi.io",
   "version": "1.0.2",
-  "main": "src/processes/web/web.process.js",
+  "main": "src/processes/web/web.process.ts",
   "repository": "https://github.com/balintsoos/api.rezsi.io.git",
   "bugs": "https://github.com/balintsoos/api.rezsi.io/issues",
   "author": "Balint Soos <soosbalint95@gmail.com> (https://github.com/balintsoos)",
@@ -11,11 +11,11 @@
     "node": "14.4.0"
   },
   "scripts": {
-    "start": "node -r dotenv/config src/processes/web/web.process.js",
-    "lint": "eslint .",
-    "unit": "mocha src/**/*.spec.js",
-    "pretest": "npm run lint",
-    "test": "npm run unit"
+    "build": "tsc",
+    "start": "node -r dotenv/config dist/processes/web/web.process.js",
+    "lint": "eslint . --ext .js,.ts",
+    "unit": "jasmine-ts --config=jasmine.json",
+    "test": "npm run lint && npm run unit"
   },
   "dependencies": {
     "@hapi/joi": "17.1.1",
@@ -42,9 +42,15 @@
     "ws": "7.3.0"
   },
   "devDependencies": {
-    "chai": "4.2.0",
+    "@types/jasmine": "3.5.11",
+    "@types/node": "14.0.14",
+    "@typescript-eslint/eslint-plugin": "3.4.0",
+    "@typescript-eslint/parser": "3.4.0",
     "eslint": "7.3.0",
-    "mocha": "8.0.1",
-    "sinon": "9.0.2"
+    "jasmine": "3.5.0",
+    "jasmine-spec-reporter": "5.0.2",
+    "jasmine-ts": "0.3.0",
+    "ts-node": "8.10.2",
+    "typescript": "3.9.5"
   }
 }

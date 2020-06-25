@@ -68,3 +68,6 @@ typings/
 
 # Local MongoDB files
 db
+
+# tsc root
+dist
