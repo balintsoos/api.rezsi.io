@@ -1,12 +1,11 @@
-const express = require('express');
+import { Router } from 'express';
 
 const auth = require('../../../modules/auth/auth');
 const authCtrl = require('../../../modules/auth/auth.controller');
 
-const router = express.Router();
+export const authRouter = Router();
 
-router.route('/')
+authRouter.route('/')
   .get(auth.authenticate(), authCtrl.getUser)
   .post(authCtrl.generateToken);
 
-module.exports = router;
