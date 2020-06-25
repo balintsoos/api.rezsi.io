@@ -5,7 +5,7 @@ const envSchema = Joi.object({
     .allow('development', 'test', 'staging', 'production')
     .required(),
   PORT: Joi.number().required(),
-  JWT_SECRET: Joi.string().required(),
+  SESSION_SECRET: Joi.string().required(),
   MONGO_URL: Joi.string().required(),
   GMAIL_USER: Joi.string().required(),
   GMAIL_PASS: Joi.string().required(),
@@ -22,7 +22,7 @@ if (error) {
 export type Config = {
   env: string;
   port: number;
-  jwt: {
+  session: {
     secret: string;
   },
   mongo: {
@@ -41,7 +41,7 @@ export type Config = {
 export const config: Config = {
   env: envVars.NODE_ENV,
   port: envVars.PORT,
-  jwt: {
+  session: {
     secret: envVars.JWT_SECRET,
   },
   mongo: {
