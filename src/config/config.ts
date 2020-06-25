@@ -1,7 +1,9 @@
-const Joi = require('@hapi/joi');
+import Joi from '@hapi/joi';
 
 const envSchema = Joi.object({
-  NODE_ENV: Joi.string().allow('development', 'test', 'staging', 'production').required(),
+  NODE_ENV: Joi.string()
+    .allow('development', 'test', 'staging', 'production')
+    .required(),
   PORT: Joi.number().required(),
   JWT_SECRET: Joi.string().required(),
   MONGO_URL: Joi.string().required(),
@@ -17,7 +19,7 @@ if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
 
-module.exports = {
+export const config = {
   env: envVars.NODE_ENV,
   port: envVars.PORT,
   jwt: {
