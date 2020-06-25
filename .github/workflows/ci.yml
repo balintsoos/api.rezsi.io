@@ -3,8 +3,18 @@ name: CI
 on: push
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+
+    env:
+      NODE_ENV: test
+      PORT: 3000
+      JWT_SECRET: your-jwt-secret
+      MONGO_URL: mongodb://localhost/rezsi-io
+      GMAIL_USER: your-gmail-address
+      GMAIL_PASS: your-gmail-password
+      GMAIL_ADDRESS: your-gmail-address
+      CLIENT_ORIGIN: http://localhost:3001
 
     steps:
     - uses: actions/checkout@v2
