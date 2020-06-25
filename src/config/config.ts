@@ -19,7 +19,26 @@ if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
 
-export const config = {
+export type Config = {
+  env: string;
+  port: number;
+  jwt: {
+    secret: string;
+  },
+  mongo: {
+    url: string;
+  },
+  gmail: {
+    user: string;
+    pass: string;
+    address: string;
+  },
+  client: {
+    origin: string;
+  },
+};
+
+export const config: Config = {
   env: envVars.NODE_ENV,
   port: envVars.PORT,
   jwt: {
