@@ -13,8 +13,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node -r dotenv/config dist/processes/web/web.process.js",
-    "lint": "eslint . --ext .js,.ts",
-    "unit": "jasmine-ts --config=jasmine.json",
+    "lint": "eslint . --ext .ts",
+    "unit": "jasmine --config=jasmine.json",
     "test": "npm run lint && npm run unit"
   },
   "dependencies": {
@@ -49,7 +49,6 @@
     "eslint": "7.3.0",
     "jasmine": "3.5.0",
     "jasmine-spec-reporter": "5.0.2",
-    "jasmine-ts": "0.3.0",
     "ts-node": "8.10.2",
     "typescript": "3.9.5"
   }
