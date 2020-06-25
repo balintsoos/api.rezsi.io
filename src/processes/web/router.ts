@@ -5,7 +5,6 @@ import * as routers from './routers';
 
 export const router = Router();
 
-// enable cors on all OPTIONS
 router.options('*', cors(corsConfig));
 router.use('/health', routers.healthRouter);
 router.use('/auth', routers.authRouter);
